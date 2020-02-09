@@ -2,8 +2,8 @@ HELP.md
 .gradle
 build/
 ssl/
-src/main/frontend/build/
-src/main/frontend/node_modules/
+src/main/frontend/build
+src/main/frontend/node_modules
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
