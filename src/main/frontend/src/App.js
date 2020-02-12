@@ -1,31 +1,51 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './Components/Navbar'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from "react-router-dom";
+import Lights from "./Components/Lights";
+import Navbar from './Components/Navbar';
+import HomePage from './Components/HomePage';
+import Door from "./Components/Door";
+import Video from "./Components/Video";
+import Users from "./Components/Users";
 
 function App() {
-  return (
-    <div className="App">
-      <Navbar/>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Hello World. How are you? Test
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <div className="App">
+
+                <Navbar/>
+                <Switch>
+                    {/*<Route path="/lights/one">*/}
+                    {/*    <Lights/>*/}
+                    {/*</Route>*/}
+                    <Route path="/lights">
+                        <Lights/>
+                    </Route>
+                    <Route path="/door">
+                        <Door/>
+                    </Route>
+                    <Route path="/video">
+                        <Video/>
+                    </Route>
+                    <Route path="/users">
+                        <Users/>
+                    </Route>
+                    <Route path="/">
+                        <HomePage/>
+                    </Route>
+                </Switch>
+
+                {/*<header className="App-header">*/}
+                {/*    */}
+                {/*</header>*/}
+
+            </div>
+        </Router>
+    );
 }
 
 export default App;

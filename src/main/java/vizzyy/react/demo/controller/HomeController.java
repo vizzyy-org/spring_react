@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-public class LandingController {
+public class HomeController {
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @RequestMapping(value = "/greeting")

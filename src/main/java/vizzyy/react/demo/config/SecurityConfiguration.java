@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile("secure")
+@Profile("enableAuth")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
