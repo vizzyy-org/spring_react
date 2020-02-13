@@ -19,9 +19,6 @@ function App() {
 
                 <Navbar/>
                 <Switch>
-                    {/*<Route path="/lights/one">*/}
-                    {/*    <Lights/>*/}
-                    {/*</Route>*/}
                     <Route path="/lights">
                         <Lights/>
                     </Route>
