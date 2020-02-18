@@ -1,11 +1,11 @@
 .App {
   text-align: center;
-  min-height: 100vh;
+  min-height: 85vh;
   background-color: #282c34;
 }
 
 .Content {
-  transform: translateY(10vh);
+  transform: translateY(3vh);
   background-color: #282c34;
   display: flex;
   flex-direction: column;
@@ -13,6 +13,7 @@
   justify-content: center;
   color: white;
   flex: 1;
+  width:100%
 }
 
 #Navbar {
@@ -26,7 +27,7 @@
 
 #Navbar li {
   float: left;
-  width: 20%;
+  width: 33.33%;
 }
 
 #Navbar li a {
@@ -74,4 +75,45 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.button1 {
+  box-shadow:inset 0px -3px 7px 0px #29bbff;
+  background:linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+  background-color:#2dabf9;
+  border-radius:3px;
+  border:1px solid #0b0e07;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:15px;
+  padding:23px 43px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #263666;
+}
+.button1:hover {
+  background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+  background-color:#0688fa;
+}
+.button1:active {
+  position:relative;
+  top:1px;
+}
+
+.stream {
+  max-height: 50vh;
+  max-width: 90vw;
+}
+
+.logs {
+  transform: translateY(2vh);
+  height: 65vh;
+  width: 90vw;
+  /*justify-content: center;*/
+  /*text-align: center;*/
+  margin: auto;
+  /*width: 50%;*/
+  /*border: 3px solid cornflowerblue;*/
+  padding: 10px;
 }

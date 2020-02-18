@@ -4,9 +4,9 @@ class Video extends React.Component{
     render() {
         return (
             <div className="Content">
-                <p>
-                    Video Page.
-                </p>
+                <img className="stream" src="/video/oculus" alt="oculus"/>
+                <br/>
+                <img className="stream" src="/video/door"  alt="door"/>
             </div>
         );
     }

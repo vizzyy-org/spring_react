@@ -1,4 +1,4 @@
-package vizzyy.react.demo;
+package vizzyy;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

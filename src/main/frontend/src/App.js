@@ -6,18 +6,20 @@ import {
     Route
 } from "react-router-dom";
 import Lights from "./Components/Lights";
-import Navbar from './Components/Navbar';
-import HomePage from './Components/HomePage';
+import Nav from './Components/Nav';
+import Home from './Components/Home';
 import Door from "./Components/Door";
 import Video from "./Components/Video";
 import Users from "./Components/Users";
+import Logs from "./Components/Logs";
 
 function App() {
     return (
         <Router>
             <div className="App">
 
-                <Navbar/>
+                <Nav/>
+
                 <Switch>
                     <Route path="/lights">
                         <Lights/>
@@ -31,14 +33,13 @@ function App() {
                     <Route path="/users">
                         <Users/>
                     </Route>
+                    <Route path="/logs">
+                        <Logs/>
+                    </Route>
                     <Route path="/">
-                        <HomePage/>
+                        <Home/>
                     </Route>
                 </Switch>
-
-                {/*<header className="App-header">*/}
-                {/*    */}
-                {/*</header>*/}
 
             </div>
         </Router>

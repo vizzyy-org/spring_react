@@ -1,17 +1,17 @@
 import React from "react";
 import logo from "../logo.svg";
 
-class HomePage extends React.Component{
+class Home extends React.Component{
     render() {
         return (
             <div className="Content">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    Hello World. How are you?
+                    Welcome Home.
                 </p>
             </div>
         );
     }
 }
 
-export default HomePage;
+export default Home;

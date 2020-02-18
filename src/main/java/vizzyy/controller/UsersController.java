@@ -1,9 +1,9 @@
-package vizzyy.react.demo.controller;
+package vizzyy.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/video")
-public class VideoController {
+@RequestMapping(value = "/users")
+public class UsersController {
 }

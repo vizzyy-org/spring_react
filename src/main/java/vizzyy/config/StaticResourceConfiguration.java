@@ -1,4 +1,4 @@
-package vizzyy.react.demo.config;
+package vizzyy.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
