@@ -29,7 +29,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            if (username.equals("cid")) { // If username exists in DB
+            System.out.println(username);
+            if (username.equals("vizzyy-ddns-net-barney") || username.equals("Nenem")) { // If username exists in DB
                 return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
             }
             return null;

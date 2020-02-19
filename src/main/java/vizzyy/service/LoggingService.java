@@ -15,9 +15,10 @@ public class LoggingService {
     private Logger log = LoggerFactory.getLogger(LoggingService.class);
 
     public void addEntry(String entry){
+        String user = " " + AuthenticationService.getUserName();
         String timeStamp = new SimpleDateFormat().format( new Date() );
-        log.info(entry);
-        arr.add(timeStamp +" -- "+entry);
+        log.info(entry + user);
+        arr.add(timeStamp +" -- "+entry + user);
     }
 
     private ArrayList<String> getLogs(){
