@@ -31,7 +31,7 @@ pipeline {
 
                         sh('''
                             cd src/main/frontend
-                            npm ic
+                            npm install
                             cd ../../../
                             ./gradlew clean build
                         ''')
