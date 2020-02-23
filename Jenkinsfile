@@ -45,8 +45,10 @@ pipeline {
                 script {
                     if (env.Deploy == "true") {
 
+                        //ec2 can only ssh through jumpbox
                         sh('''
                             echo "SCP file to remote server"
+                            scp -i /var/lib/jenkins/ec2pair.pem build/libs/Home*.jar ec2-user@vizzyy.com:~/spring_react
                         ''')
 
                     }
@@ -60,7 +62,7 @@ pipeline {
                             if (env.Deploy == "true") {
 
                                 sh('''
-                                    echo "Start service on remote server"
+                                    ssh -i /var/lib/jenkins/ec2pair.pem ec2-user@vizzyy.com 'sudo systemctl restart home'
                                 ''')
 
                             }
