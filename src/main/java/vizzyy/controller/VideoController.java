@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/video")
+@PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
 public class VideoController {
 
     @Autowired

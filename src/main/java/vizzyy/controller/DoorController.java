@@ -1,6 +1,7 @@
 package vizzyy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -8,6 +9,7 @@ import vizzyy.service.LoggingService;
 
 @RestController
 @RequestMapping(value = "/door")
+@PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
 public class DoorController {
 
     @Autowired

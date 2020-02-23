@@ -7,23 +7,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import vizzyy.service.AuthenticationService;
 
 import java.security.Principal;
 
 @RestController
 public class HomeController {
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    //@PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_POWER', 'ROLE_POWER')")
     @RequestMapping(value = "/greeting")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name) {
         return "greeting";
     }
 
     @RequestMapping(value = "/user")
-    public String user(Model model, Principal principal) {
-        UserDetails currentUser = (UserDetails) ((Authentication) principal).getPrincipal();
-        model.addAttribute("username", currentUser.getUsername());
-        return currentUser.getUsername();
+    public String user(Model model) {
+        model.addAttribute("username", AuthenticationService.getUserName());
+        return AuthenticationService.getUserName();
     }
 
 
