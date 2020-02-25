@@ -91,10 +91,12 @@ pipeline {
                                 echo result
                                 if (result.status == "UP")
                                     break
-                                else
+                                else {
                                     String script = "sleep " + (1000 * i)
                                     echo script
                                     sh script
+                                    sleep time: i, unit: 'SECONDS'
+                                }
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
