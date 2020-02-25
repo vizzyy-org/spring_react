@@ -10,13 +10,15 @@ try {
     echo "Building from jenkins job..."
 }
 
+def fib(n) { n < 2 ? n : fib(n - 2) + fib(n - 1) }
+
 pipeline {
     agent any
     stages {
         stage("Acknowledge") {
             steps {
                 script {
-                    if(env.Build == "true" && ISSUE_NUMBER) {
+                    if (env.Build == "true" && ISSUE_NUMBER) {
                         prTools.comment(ISSUE_NUMBER, """{"body": "Jenkins triggered $currentBuild.displayName"}""", "spring_react")
                     }
                 }
@@ -26,7 +28,7 @@ pipeline {
         stage("Build") {
             steps {
                 script {
-                    if(env.Build == "true") {
+                    if (env.Build == "true") {
                         prTools.checkoutBranch(ISSUE_NUMBER, "vizzyy-org/spring_react")
 
                         sh('''
@@ -57,31 +59,74 @@ pipeline {
         }
 
         stage("Start") {
-                    steps {
-                        script {
-                            if (env.Deploy == "true") {
+            steps {
+                script {
+                    if (env.Deploy == "true") {
 
-                                sh('''
+                        sh('''
                                     ssh -i ~/ec2pair.pem ec2-user@vizzyy.com 'sudo systemctl restart home'
                                 ''')
 
-                            }
-                        }
                     }
                 }
+            }
+        }
+
+        stage("Confirm") {
+            steps {
+                script {
+                    if (env.Deploy == "true") {
+
+                        JsonSlurper jsonSlurper = new JsonSlurper()
+
+                        for(int i=0; i<15; i++){
+                            def health = sh (
+                                    script: 'curl --cert-type P12 --cert ~/home-cert.p12:changeit https://www.vizzyy.com/actuator/health',
+                                    returnStdout: true
+                            ).trim()
+                            echo health
+                            try {
+                                def result = jsonSlurper.parseText(health)
+                                echo result
+                            } catch ( Exception e) {
+                                echo "could not parse"
+                                log.info(e)
+                            }
+                            if (result.status == "UP")
+                                break
+                            else
+                                sleep(1000 * fib(i)) //exponential back-off
+                        }
+
+                    }
+                }
+            }
+        }
+
+        stage("Version") {
+            steps {
+                script {
+                    if (env.Build == "true") {
+
+                        echo "This is where we'll increment the the version number in the gradle.build file."
+
+                    }
+                }
+            }
+        }
     }
     post {
         success {
             script {
-                if(env.Build == "true" && ISSUE_NUMBER) {
+                if (env.Build == "true" && ISSUE_NUMBER) {
                     prTools.merge(ISSUE_NUMBER, """{"commit_title": "Jenkins merged $currentBuild.displayName","merge_method": "merge"}""", "spring_react")
-                    prTools.comment(ISSUE_NUMBER, """{"body": "Jenkins successfully deployed $currentBuild.displayName"}""" , "spring_react")
+                    prTools.comment(ISSUE_NUMBER, """{"body": "Jenkins successfully deployed $currentBuild.displayName"}""", "spring_react")
                 }
             }
         }
         failure {
             script {
-                if(env.Build == "true" && ISSUE_NUMBER) {
+                if (env.Build == "true" && ISSUE_NUMBER) {
                     prTools.comment(ISSUE_NUMBER, """{"body": "Jenkins failed during $currentBuild.displayName"}""", "spring_react")
                 }
             }
