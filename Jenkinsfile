@@ -91,14 +91,15 @@ pipeline {
                                 echo health
                                 def result = jsonSlurper.parseText(health)
                                 echo result
+                                if (result.status == "UP")
+                                    break
+                                else
+                                    sleep(1000 * fib(i)) //exponential back-off
                             } catch ( Exception e) {
                                 echo "could not parse"
-                                log.info(e)
+                                System.out.println(e)
                             }
-                            if (result.status == "UP")
-                                break
-                            else
-                                sleep(1000 * fib(i)) //exponential back-off
+
                         }
 
                     }
