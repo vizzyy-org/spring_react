@@ -87,15 +87,13 @@ pipeline {
                                         returnStdout: true
                                 ).trim()
                                 echo health
-                                def result = jsonSlurper.parseText(health)
-                                echo result
-                                if (result.status == "UP")
+                                if (health.status == "UP")
                                     break
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
                             }
-                            
+
                             sleep time: i, unit: 'SECONDS'
 
                         }
