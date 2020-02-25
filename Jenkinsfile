@@ -12,7 +12,7 @@ try {
     echo "Building from jenkins job..."
 }
 
-def fib(n) { n < 2 ? n : fib(n - 2) + fib(n - 1) }
+def fib(n) { return n < 2 ? n : fib(n - 2) + fib(n - 1) }
 
 pipeline {
     agent any
@@ -81,7 +81,7 @@ pipeline {
 
                         JsonSlurper jsonSlurper = new JsonSlurper()
 
-                        for(int i=0; i<15; i++){
+                        for(int i=1; i<15; i++){
 
                             try {
                                 def health = sh (
