@@ -92,7 +92,7 @@ pipeline {
                                 if (result.status == "UP")
                                     break
                                 else
-                                    sleep(1000 * Math.pow(2,i)) //exponential back-off
+                                    sleep(1000 * Integer.parseInt(Math.pow(2,i) as String)) //exponential back-off
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
