@@ -92,7 +92,9 @@ pipeline {
                                 if (result.status == "UP")
                                     break
                                 else
-                                    sh "sleep " + (1000 * Math.pow(2, i))
+                                    String script = "sleep " + (1000 * i)
+                                    echo script
+                                    sh script
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
