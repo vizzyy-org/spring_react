@@ -1,6 +1,5 @@
 #! groovy
-
-import groovy.json.JsonSlurper
+import java.security.InvalidParameterException
 
 currentBuild.displayName = "Home Pipeline [ " + currentBuild.number + " ]"
 
@@ -77,8 +76,7 @@ pipeline {
                 script {
                     if (env.Deploy == "true") {
 
-                        JsonSlurper jsonSlurper = new JsonSlurper()
-
+                        def deployed = false
                         for(int i=0; i<30; i++){
 
                             try {
@@ -87,8 +85,10 @@ pipeline {
                                         returnStdout: true
                                 ).trim()
                                 echo health
-                                if (health == "{\"status\":\"UP\"}")
+                                if (health == "{\"status\":\"UP\"}"){
+                                    deployed = true
                                     break
+                                }
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
@@ -97,6 +97,9 @@ pipeline {
                             sleep time: i, unit: 'SECONDS'
 
                         }
+
+                        if(!deployed)
+                            throw new InvalidParameterException()
 
                     }
                 }
