@@ -97,7 +97,7 @@ pipeline {
                                     sleep(1000 * fib(i)) //exponential back-off
                             } catch ( Exception e) {
                                 echo "could not parse"
-                                echo e
+                                e.printStackTrace()
                             }
 
                         }
