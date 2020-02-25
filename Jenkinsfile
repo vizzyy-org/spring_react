@@ -82,12 +82,13 @@ pipeline {
                         JsonSlurper jsonSlurper = new JsonSlurper()
 
                         for(int i=0; i<15; i++){
-                            def health = sh (
-                                    script: 'curl --cert-type P12 --cert ~/home-cert.p12:changeit https://www.vizzyy.com/actuator/health',
-                                    returnStdout: true
-                            ).trim()
-                            echo health
+
                             try {
+                                def health = sh (
+                                        script: 'curl --cert-type P12 --cert ~/home-cert.p12:changeit https://www.vizzyy.com/actuator/health',
+                                        returnStdout: true
+                                ).trim()
+                                echo health
                                 def result = jsonSlurper.parseText(health)
                                 echo result
                             } catch ( Exception e) {
