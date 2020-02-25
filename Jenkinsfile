@@ -89,17 +89,15 @@ pipeline {
                                 echo health
                                 def result = jsonSlurper.parseText(health)
                                 echo result
-                                if (result.status == "UP")
-                                    break
-                                else {
-                                    String script = "sleep " + (1000 * i)
-                                    echo script
-                                    sh script
-                                    sleep time: i, unit: 'SECONDS'
-                                }
+
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
+                            }
+                            if (result.status == "UP")
+                                break
+                            else {
+                                sleep time: i, unit: 'SECONDS'
                             }
 
                         }
