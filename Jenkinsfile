@@ -1,5 +1,7 @@
 #! groovy
 
+import groovy.json.JsonSlurper
+
 currentBuild.displayName = "Home Pipeline [ " + currentBuild.number + " ]"
 
 try {
