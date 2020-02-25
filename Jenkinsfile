@@ -79,7 +79,7 @@ pipeline {
 
                         JsonSlurper jsonSlurper = new JsonSlurper()
 
-                        for(int i=0; i<10; i++){
+                        for(int i=0; i<30; i++){
 
                             try {
                                 def health = sh (
@@ -92,7 +92,7 @@ pipeline {
                                 if (result.status == "UP")
                                     break
                                 else
-                                    sleep(1000 * Integer.parseInt(Math.pow(2,i) as String)) //exponential back-off
+                                    sh "sleep " + (1000 * Math.pow(2, i))
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
