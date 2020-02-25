@@ -87,7 +87,7 @@ pipeline {
                                         returnStdout: true
                                 ).trim()
                                 echo health
-                                if (health.status == "UP")
+                                if (health == "{\"status\":\"UP\"}")
                                     break
                             } catch ( Exception e) {
                                 echo "could not parse"
