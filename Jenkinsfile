@@ -21,6 +21,7 @@ pipeline {
                     if (env.Build == "true" && ISSUE_NUMBER) {
                         prTools.comment(ISSUE_NUMBER, """{"body": "Jenkins triggered $currentBuild.displayName"}""", "spring_react")
                     }
+                    prTools.checkoutBranch(ISSUE_NUMBER, "vizzyy-org/spring_react")
                 }
             }
         }
@@ -29,8 +30,6 @@ pipeline {
             steps {
                 script {
                     if (env.Build == "true") {
-                        prTools.checkoutBranch(ISSUE_NUMBER, "vizzyy-org/spring_react")
-
                         sh('''
                             cd src/main/frontend
                             npm install
