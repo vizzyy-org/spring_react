@@ -12,8 +12,6 @@ try {
     echo "Building from jenkins job..."
 }
 
-def fib(n) { return n < 2 ? n : fib(n - 2) + fib(n - 1) }
-
 pipeline {
     agent any
     stages {
@@ -81,7 +79,7 @@ pipeline {
 
                         JsonSlurper jsonSlurper = new JsonSlurper()
 
-                        for(int i=1; i<15; i++){
+                        for(int i=0; i<10; i++){
 
                             try {
                                 def health = sh (
@@ -94,7 +92,7 @@ pipeline {
                                 if (result.status == "UP")
                                     break
                                 else
-                                    sleep(1000 * fib(i)) //exponential back-off
+                                    sleep(1000 * Math.pow(2,i)) //exponential back-off
                             } catch ( Exception e) {
                                 echo "could not parse"
                                 e.printStackTrace()
