@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import vizzyy.service.LoggingService;
+import vizzyy.service.S3ResourceService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
@@ -22,11 +23,9 @@ public class VideoController {
     @Autowired
     LoggingService loggingService;
 
-    @Value("${vox.auth}")
-    String voxAuth;
+    private static String voxAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/vox.password").toArray()[0];
 
-    @Value("${oculus.auth}")
-    String oculusAuth;
+    private static String oculusAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/oculus.password").toArray()[0];
 
     @RequestMapping("/oculus")
     public void oculus(HttpServletResponse response) {
