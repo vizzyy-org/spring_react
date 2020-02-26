@@ -1,7 +1,10 @@
 import React from "react";
 import logo from "../logo.svg";
+import fetchAPI from "./fetchAPI";
 
 class Home extends React.Component{
+    componentDidMount(){ fetchAPI("/home") }
+
     render() {
         return (
             <div className="Content">

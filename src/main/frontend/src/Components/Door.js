@@ -1,38 +1,31 @@
 import React from "react";
 import {Col, Grid, Row} from "react-flexbox-grid";
-
-function fetchAPI(state) {
-    fetch("/door/" + state)
-        .then((response) => {
-            return response;
-        })
-        .then((myJson) => {
-            console.log(myJson);
-        });
-}
+import fetchAPI from "./fetchAPI";
 
 class Door extends React.Component{
+    componentDidMount(){ fetchAPI("/door") }
+
     render() {
         return (
             <div className="Content">
-                <br></br>
+                <br/>
                 <Grid >
                     <Row>
                         <Col xs={12} >
                             DOOR
                         </Col>
                     </Row>
-                    <br></br>
-                    <br></br>
+                    <br/>
+                    <br/>
                     <Row>
                         <Col xs={12} >
-                            <button className="button1" onClick={() => fetchAPI("open")}>Open</button>
+                            <button className="button1" onClick={() => fetchAPI("/door/open")}>Open</button>
                         </Col>
                     </Row>
-                    <br></br>
+                    <br/>
                     <Row>
                         <Col xs={12} >
-                            <button className="button1" onClick={() => fetchAPI("close")}>Close</button>
+                            <button className="button1" onClick={() => fetchAPI("/door/close")}>Close</button>
                         </Col>
                     </Row>
                 </Grid>
