@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
 @RestController
+@RequestMapping(value = "/video")
 @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
 public class VideoController {
 
@@ -26,12 +27,7 @@ public class VideoController {
 
     private static String oculusAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/oculus.password").toArray()[0];
 
-    @RequestMapping(value = "/video")
-    public void video(){
-        loggingService.addEntry("Calling /video");
-    }
-
-    @RequestMapping("/video/oculus")
+    @RequestMapping("/oculus")
     public void oculus(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/oculus...");
         RestTemplate restTemplate = new RestTemplate();
@@ -49,7 +45,7 @@ public class VideoController {
         );
     }
 
-    @RequestMapping("/video/door")
+    @RequestMapping("/door")
     public void door(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/door...");
 

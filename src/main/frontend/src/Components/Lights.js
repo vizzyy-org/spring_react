@@ -1,14 +1,21 @@
 import React from "react";
 import {Col, Grid, Row} from "react-flexbox-grid";
-import fetchAPI from "./fetchAPI";
+
+function fetchAPI(light, state) {
+    fetch("/lights/" + light + "?state=" + state)
+        .then((response) => {
+            return response;
+        })
+        .then((myJson) => {
+            console.log(myJson);
+        });
+}
 
 class Lights extends React.Component {
-    componentDidMount(){ fetchAPI("/lights") }
-
     render() {
         return (
             <div className="Content">
-                <br/>
+                <br></br>
                 <Grid >
                     <Row>
                         <Col xs={4} >
@@ -21,29 +28,29 @@ class Lights extends React.Component {
                             TABLE
                         </Col>
                     </Row>
-                    <br/>
-                    <br/>
+                    <br></br>
+                    <br></br>
                     <Row>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("/lights/one?state=true")}>On</button>
+                            <button className="button1" onClick={() => fetchAPI("one", true)}>On</button>
                         </Col>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("/lights/two?state=true")}>On</button>
+                            <button className="button1" onClick={() => fetchAPI("two", true)}>On</button>
                         </Col>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("/lights/three?state=true")}>On</button>
+                            <button className="button1" onClick={() => fetchAPI("three", true)}>On</button>
                         </Col>
                     </Row>
-                    <br/>
+                    <br></br>
                     <Row>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("/lights/one?state=false")}>Off</button>
+                            <button className="button1" onClick={() => fetchAPI("one", false)}>Off</button>
                         </Col>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("/lights/two?state=false")}>Off</button>
+                            <button className="button1" onClick={() => fetchAPI("two", false)}>Off</button>
                         </Col>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("/lights/three?state=false")}>Off</button>
+                            <button className="button1" onClick={() => fetchAPI("three", false)}>Off</button>
                         </Col>
                     </Row>
                 </Grid>

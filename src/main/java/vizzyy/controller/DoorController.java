@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import vizzyy.service.LoggingService;
 
 @RestController
+@RequestMapping(value = "/door")
 @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
 public class DoorController {
 
@@ -17,12 +18,7 @@ public class DoorController {
     @Autowired
     RestTemplate restTemplate;
 
-    @RequestMapping(value = "/door")
-    public void door(){
-        loggingService.addEntry("Calling /door");
-    }
-
-    @RequestMapping(value = "/door/open")
+    @RequestMapping(value = "/open")
     public String open() {
         String entry = "User BLEEP BLOOP opened door at BLAH BLAH BLAH time.";
         loggingService.addEntry("Calling /door/open?entry="+entry);
@@ -30,7 +26,7 @@ public class DoorController {
         return res;
     }
 
-    @RequestMapping(value = "/door/close")
+    @RequestMapping(value = "/close")
     public String close() {
         String entry = "User BLEEP BLOOP closed door at BLAH BLAH BLAH time.";
         loggingService.addEntry("Calling /door/close?entry="+entry);
