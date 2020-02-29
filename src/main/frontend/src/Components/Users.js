@@ -1,4 +1,5 @@
 import React from "react";
+import {Col, Grid, Row} from "react-flexbox-grid";
 
 class Users extends React.Component{
     constructor() {
@@ -7,8 +8,6 @@ class Users extends React.Component{
     }
 
     componentDidMount() {
-        let users = [];
-
         fetch("/users/list")
             .then(response => response.json())
             .then(data => {
@@ -16,18 +15,17 @@ class Users extends React.Component{
             })
     }
 
-
     render() {
         return (
             <div className="Content">
                 <p>
                     Users Page.
                 </p>
-                <ul>
+                <Grid >
                     {this.state.users.map(user => {
-                        return <li key={`user-${user.commonName}`}>{user.commonName} - {user.role}</li>
+                        return <Row><Col xs={6} >{user.commonName}</Col><Col xs={6} >{user.role}</Col></Row>
                     })}
-                </ul>
+                </Grid>
             </div>
         );
     }
