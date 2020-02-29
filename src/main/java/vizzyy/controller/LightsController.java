@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import vizzyy.service.LoggingService;
+import vizzyy.service.S3ResourceService;
 
 @RestController
 @RequestMapping(value = "/lights")
@@ -19,24 +20,26 @@ public class LightsController {
     @Autowired
     RestTemplate restTemplate;
 
+    private static String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
+
     @RequestMapping(value = "/one")
     public String lightOne(@RequestParam Boolean state) {
         loggingService.addEntry("Calling /lights/one?state="+state);
-        String res = restTemplate.getForObject("https://vizzyy.ddns.net:9001/light1?status="+state, String.class);
+        String res = restTemplate.getForObject(ddns + ":9001/light1?status="+state, String.class);
         return res;
     }
 
     @RequestMapping(value = "/two")
     public String lightTwo(@RequestParam Boolean state) {
         loggingService.addEntry("Calling /lights/two?state="+state);
-        String res = restTemplate.getForObject("https://vizzyy.ddns.net:9001/light2?status="+state, String.class);
+        String res = restTemplate.getForObject(ddns + ":9001/light2?status="+state, String.class);
         return res;
     }
 
     @RequestMapping(value = "/three")
     public String lightThree(@RequestParam Boolean state) {
         loggingService.addEntry("Calling /lights/three?state="+state);
-        String res = restTemplate.getForObject("https://vizzyy.ddns.net:9007/light1?status="+state, String.class);
+        String res = restTemplate.getForObject(ddns + ":9007/light1?status="+state, String.class);
         return res;
     }
 }

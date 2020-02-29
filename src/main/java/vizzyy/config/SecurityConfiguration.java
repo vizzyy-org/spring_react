@@ -1,17 +1,19 @@
 package vizzyy.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import vizzyy.domain.UserRepository;
+import vizzyy.service.LoggingService;
 
 import java.util.List;
 
@@ -21,11 +23,11 @@ import java.util.List;
 @Profile("enableAuth")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Value("#{'${server.users.admin}'.split(',')}")
-    private List<String> adminUsers;
+    @Autowired
+    UserRepository userRepository;
 
-    @Value("#{'${server.users.power}'.split(',')}")
-    private List<String> powerUsers;
+    @Autowired
+    LoggingService loggingService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,21 +41,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            System.out.println(username);
-            if (adminUsers.contains(username)) { // If username exists in DB
-                return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
-            } else if (powerUsers.contains(username)) { // If username exists in DB
-                return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_POWER"));
+            vizzyy.domain.User localUser = userRepository.findByCommonName(username).get(0);
+
+            if(localUser != null) {
+                System.out.println("User details: " + localUser.toString());
+                return new User(username, "", getRole(localUser.getRole()));
             } else {
-                return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
+                System.out.println("User not in DB: "+ username);
+                return new User(username, "", getRole("default"));
             }
         };
     }
 
-    //To resolve ${} in @Value
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
-        return new PropertySourcesPlaceholderConfigurer();
+    private List<GrantedAuthority> getRole(String role){
+        String authority;
+        switch (role) {
+            case "owner":
+                authority = "ROLE_ADMIN";
+                break;
+            case "power":
+                authority = "ROLE_POWER";
+                break;
+            default:
+                authority = "ROLE_USER";
+        }
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
     }
 
 }

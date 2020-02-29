@@ -2,7 +2,6 @@ package vizzyy.controller;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,15 +23,15 @@ public class VideoController {
     LoggingService loggingService;
 
     private static String voxAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/vox.password").toArray()[0];
-
     private static String oculusAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/oculus.password").toArray()[0];
+    private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/cam.url").toArray()[0];
 
     @RequestMapping("/oculus")
     public void oculus(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/oculus...");
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.execute(
-                URI.create("http://vizzyy.ddns.net:9003"),
+                URI.create(cameras + ":9003"),
                 HttpMethod.GET,
                 clientHttpRequest -> {
                     clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+oculusAuth);
@@ -51,7 +50,7 @@ public class VideoController {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.execute(
-                URI.create("http://vizzyy.ddns.net:9002"),
+                URI.create(cameras + ":9002"),
                 HttpMethod.GET,
                 clientHttpRequest -> {
                     clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+voxAuth);
