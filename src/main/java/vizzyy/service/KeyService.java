@@ -69,7 +69,7 @@ public class KeyService {
     }
 
     public void export(String CN) throws IOException, InterruptedException {
-        String command = "python emailCert.py " + CN +".p12";
+        String command = "python scripts/emailCert.py " + CN +".p12";
         execute(command);
     }
 
