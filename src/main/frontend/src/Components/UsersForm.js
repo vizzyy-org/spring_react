@@ -51,11 +51,11 @@ class UsersForm extends React.Component{
                 <br/><br/>
                 <form onSubmit={this.onSubmit}>
                     <label>
-                        CommonName: <input type="text" name="cn" value={cn} onChange={this.onChange}/> <br/><br/>
-                        Role: <input type="text" name="role" value={role} onChange={this.onChange}/> <br/><br/>
-                        Password: <input type="text" name="pw" value={pw} onChange={this.onChange}/> <br/><br/>
-                        Duration: <input type="text" name="dur" value={dur} onChange={this.onChange}/> <br/><br/>
-                        Email: <input type="text" name="email" value={email} onChange={this.onChange}/> <br/><br/>
+                        CommonName: <input type="text" name="cn" value={cn} placeholder="blarp-cn" onChange={this.onChange}/> <br/><br/>
+                        Role: <input type="text" name="role" value={role} placeholder="power" onChange={this.onChange}/> <br/><br/>
+                        Password: <input type="text" name="pw" value={pw} placeholder="pw" onChange={this.onChange}/> <br/><br/>
+                        Duration: <input type="text" name="dur" value={dur} placeholder="365" onChange={this.onChange}/> <br/><br/>
+                        Email: <input type="text" name="email" value={email} placeholder="something@gmail.com" onChange={this.onChange}/> <br/><br/>
                     </label>
                     <br/>
                     <input type="submit" value="Submit" />

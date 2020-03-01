@@ -44,4 +44,11 @@ public class UsersController {
         User newUser = userService.createUser(CN, role);
         loggingService.addEntry(String.format("Successfully created user: %s", newUser.toString()));
     }
+
+    @RequestMapping(value = "/delete")
+    public void delete(@RequestParam String CN) {
+        loggingService.addEntry(String.format("Calling /users/remove?CN=%s", CN));
+        userService.deleteUser(CN);
+        loggingService.addEntry(String.format("Successfully delete user: %s", CN));
+    }
 }

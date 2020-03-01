@@ -23,12 +23,19 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public User deleteUser(){
-        return null;
+    public void deleteUser(String CN){
+
+
+        User user = getUser(CN);
+        if(user != null && !user.getRole().equals("owner"))
+            userRepository.delete(user);
+        else
+            throw new RuntimeException("Could not delete applicant.");
     }
 
-    public User getUser(){
-        return null;
+    public User getUser(String CN){
+        List<User> results = userRepository.findByCommonName(CN);
+        return results.size() > 0 ? results.get(0) : null;
     }
 
 }

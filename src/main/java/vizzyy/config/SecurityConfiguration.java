@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 authority = "ROLE_POWER";
                 break;
             default:
-                authority = "ROLE_USER";
+                authority = "ROLE_BASE";
         }
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
     }

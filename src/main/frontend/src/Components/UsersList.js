@@ -3,8 +3,8 @@ import {Col, Grid, Row} from "react-flexbox-grid";
 import {Link} from "react-router-dom";
 
 class UsersList extends React.Component{
-    constructor() {
-        super()
+    constructor(props) {
+        super(props);
         this.state = { users: [] }
     }
 
@@ -15,6 +15,21 @@ class UsersList extends React.Component{
                 this.setState({ users: data })
             })
     }
+
+    deleteUser(cn){
+        fetch("/users/delete?CN="+cn)
+            .then((response) => {
+                fetch("/users/list")
+                    .then(response => response.json())
+                    .then(data => {
+                        this.setState({ users: data })
+                    })
+                return response;
+            })
+            .then((myJson) => {
+                console.log(myJson);
+            });
+    };
 
     render() {
         return (
@@ -31,7 +46,12 @@ class UsersList extends React.Component{
                 <br/><br/>
                 <Grid >
                     {this.state.users.map(user => {
-                        return <Row><Col xs>{user.commonName}</Col><Col xs >{user.role}</Col></Row>
+                        return <Row>
+                            <Col className="Little-Text" xs>{user.commonName}</Col>
+                            <Col className="Little-Text" xs >{user.role}</Col>
+                            <Col xs ><button onClick={() => this.deleteUser(user.commonName)}>Delete</button></Col>
+                            <br/><br/><br/>
+                        </Row>
                     })}
                 </Grid>
             </div>

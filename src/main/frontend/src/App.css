@@ -22,6 +22,8 @@
   color: white;
 }
 
+.Little-Text { font-size: 10px }
+
 #Navbar {
   width: 100%;
   list-style-type: none;

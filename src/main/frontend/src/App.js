@@ -39,7 +39,7 @@ function App() {
                         <UsersList/>
                     </Route>
                     <Route path="/users">
-                        <Users/>
+                        <UsersList/>
                     </Route>
                     <Route path="/logs">
                         <Logs/>
