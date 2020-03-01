@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             case "owner":
                 authority = "ROLE_ADMIN";
                 break;
+            case "admin":
             case "power":
                 authority = "ROLE_POWER";
                 break;
