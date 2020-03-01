@@ -41,6 +41,7 @@ public class UsersController {
         keyService.signWithCA(CN);
         keyService.combine(CN, pw);
         keyService.export(CN);
-        userService.createUser(CN, role);
+        User newUser = userService.createUser(CN, role);
+        loggingService.addEntry(String.format("Successfully created user: %s", newUser.toString()));
     }
 }

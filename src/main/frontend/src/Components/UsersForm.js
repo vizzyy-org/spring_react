@@ -21,7 +21,7 @@ class UsersForm extends React.Component{
     onSubmit = (e) => {
         e.preventDefault();
         console.log(this.state);
-        const { cn, role, pw, dur, email } = this.state;
+        const { cn, role, pw } = this.state;
         fetch("/users/generate?CN="+cn+"&role="+role+"&pw="+pw)
             .then((response) => {
                 return response;
@@ -29,6 +29,7 @@ class UsersForm extends React.Component{
             .then((myJson) => {
                 console.log(myJson);
             });
+        this.setState( {cn: '', role: '', pw: '', dur: '', email: '' });
     }
 
     render() {
