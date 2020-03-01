@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vizzyy.domain.UserRepository;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 @Service
 public class KeyService {
@@ -21,8 +23,18 @@ public class KeyService {
                 "-subj /CN=" + CN + "/OU=" + CN;
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
+        processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+        }
         process.waitFor();
+        System.out.println("ok!");
+
+        in.close();
     }
 
     public void createSigningRequest(String CN) throws IOException, InterruptedException {
@@ -31,8 +43,18 @@ public class KeyService {
                 "-out "+CN+".csr -sha256 -subj /CN=" + CN + "/OU=" + CN;
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
+        processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+        }
         process.waitFor();
+        System.out.println("ok!");
+
+        in.close();
     }
 
     public void signWithCA(String CN) throws IOException, InterruptedException {
@@ -42,8 +64,18 @@ public class KeyService {
                 "-out "+CN+".crt -subj /CN="+CN+"/OU="+CN+" -passin pass:" + caPass;
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
+        processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+        }
         process.waitFor();
+        System.out.println("ok!");
+
+        in.close();
     }
 
     public void combine(String CN, String password) throws IOException, InterruptedException {
@@ -53,16 +85,36 @@ public class KeyService {
                 "-out "+CN+".p12";
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
+        processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+        }
         process.waitFor();
+        System.out.println("ok!");
+
+        in.close();
     }
 
     public void export(String CN) throws IOException, InterruptedException {
         String command = "python emailCert.py " + CN +".p12";
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
+        processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+        }
         process.waitFor();
+        System.out.println("ok!");
+
+        in.close();
     }
 
 }
