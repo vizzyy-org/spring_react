@@ -19,8 +19,9 @@ class Users extends React.Component{
         return (
             <div className="Content">
                 <p>
-                    Users Page.
+                    Users List
                 </p>
+                <br/>
                 <Grid >
                     {this.state.users.map(user => {
                         return <Row><Col xs={6} >{user.commonName}</Col><Col xs={6} >{user.role}</Col></Row>

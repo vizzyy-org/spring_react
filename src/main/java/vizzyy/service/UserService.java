@@ -17,8 +17,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(){
-        return null;
+    public User createUser(String CN, String role){
+        int size = getUsers().size() + 1;
+        User newUser = new User((long) size, CN, role);
+        return userRepository.save(newUser);
     }
 
     public User deleteUser(){

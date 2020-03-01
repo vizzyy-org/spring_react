@@ -1,9 +1,6 @@
 package vizzyy.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -11,9 +8,12 @@ public class User {
 
     @Id
     @Column(name="user_id")
+//    @GeneratedValue
     private Long id;
+
     @Column(name="common_name")
     private String commonName;
+
     private String role;
 
     protected User() {}
