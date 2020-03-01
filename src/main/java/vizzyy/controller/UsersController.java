@@ -29,7 +29,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "generate")
-    public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) throws IOException {
+    public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) throws IOException, InterruptedException {
         keyService.generatePair(CN);
         keyService.createSigningRequest(CN);
         keyService.signWithCA(CN);
