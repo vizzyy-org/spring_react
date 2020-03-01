@@ -10,6 +10,8 @@ import Nav from './Components/Nav';
 import Home from './Components/Home';
 import Door from "./Components/Door";
 import Video from "./Components/Video";
+import UsersForm from "./Components/UsersForm";
+import UsersList from "./Components/UsersList";
 import Users from "./Components/Users";
 import Logs from "./Components/Logs";
 
@@ -29,6 +31,12 @@ function App() {
                     </Route>
                     <Route path="/video">
                         <Video/>
+                    </Route>
+                    <Route path="/users/form">
+                        <UsersForm/>
+                    </Route>
+                    <Route path="/users/list">
+                        <UsersList/>
                     </Route>
                     <Route path="/users">
                         <Users/>

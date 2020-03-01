@@ -1,31 +1,20 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import {Col, Grid, Row} from "react-flexbox-grid";
 
 class Users extends React.Component{
-    constructor() {
-        super()
-        this.state = { users: [] }
-    }
-
-    componentDidMount() {
-        fetch("/users/list")
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ users: data })
-            })
-    }
 
     render() {
         return (
             <div className="Content">
                 <p>
-                    Users List
+                    Manage Users
                 </p>
-                <br/>
                 <Grid >
-                    {this.state.users.map(user => {
-                        return <Row><Col xs={6} >{user.commonName}</Col><Col xs={6} >{user.role}</Col></Row>
-                    })}
+                    <Row>
+                        <Col xs><Link to="/users/list">List</Link></Col>
+                        <Col xs><Link to="/users/form">Register</Link></Col>
+                    </Row>
                 </Grid>
             </div>
         );
