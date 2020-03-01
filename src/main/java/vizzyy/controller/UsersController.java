@@ -9,6 +9,7 @@ import vizzyy.domain.User;
 import vizzyy.service.KeyService;
 import vizzyy.service.UserService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "generate")
-    public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) {
+    public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) throws IOException {
         keyService.generatePair(CN);
         keyService.createSigningRequest(CN);
         keyService.signWithCA(CN);
