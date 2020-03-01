@@ -59,8 +59,8 @@ public class KeyService {
 
     public void signWithCA(String CN) throws IOException, InterruptedException {
         String command =
-                "openssl ca -config $CAROOT/ca.conf -batch " +
-                "-in "+CN+".csr -cert $CAROOT/ca.crt -keyfile $CAROOT/ca.key " +
+                "openssl ca -config /home/ec2-user/ca/ca.conf -batch " +
+                "-in "+CN+".csr -cert /home/ec2-user/ca/ca.crt -keyfile /home/ec2-user/ca/ca.key " +
                 "-out "+CN+".crt -subj /CN="+CN+"/OU="+CN+" -passin pass:" + caPass;
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
