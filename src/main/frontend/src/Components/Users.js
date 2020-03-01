@@ -6,7 +6,7 @@ class Users extends React.Component{
 
     render() {
         return (
-            <div className="Content">
+            <div className="Users">
                 <p>
                     Manage Users
                 </p>

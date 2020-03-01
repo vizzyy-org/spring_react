@@ -18,7 +18,7 @@ class UsersList extends React.Component{
 
     render() {
         return (
-            <div className="Content">
+            <div className="Users" >
                 <p>
                     Manage Users
                 </p>
@@ -31,7 +31,7 @@ class UsersList extends React.Component{
                 <br/><br/>
                 <Grid >
                     {this.state.users.map(user => {
-                        return <Row><Col size={1} collapse="xs">{user.commonName}</Col><Col xs >{user.role}</Col></Row>
+                        return <Row><Col xs>{user.commonName}</Col><Col xs >{user.role}</Col></Row>
                     })}
                 </Grid>
             </div>

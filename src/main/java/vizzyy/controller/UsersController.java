@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vizzyy.domain.User;
 import vizzyy.service.KeyService;
+import vizzyy.service.LoggingService;
 import vizzyy.service.UserService;
 
 import java.io.IOException;
@@ -23,13 +24,18 @@ public class UsersController {
     @Autowired
     KeyService keyService;
 
-    @RequestMapping(value= "list")
+    @Autowired
+    LoggingService loggingService;
+
+    @RequestMapping(value= "/list")
     public List<User> users(){
+        loggingService.addEntry("Calling /users/list");
         return userService.getUsers();
     }
 
-    @RequestMapping(value = "generate")
+    @RequestMapping(value = "/generate")
     public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) throws IOException, InterruptedException {
+        loggingService.addEntry(String.format("Calling /users/generate?CN=%s&role=%s&pw=%s", CN, role, pw));
         keyService.generatePair(CN);
         keyService.createSigningRequest(CN);
         keyService.signWithCA(CN);

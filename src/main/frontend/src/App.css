@@ -16,6 +16,12 @@
   width:100%
 }
 
+.Users {
+  transform: translateY(3vh);
+  background-color: #282c34;
+  color: white;
+}
+
 #Navbar {
   width: 100%;
   list-style-type: none;
