@@ -41,11 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            vizzyy.domain.User localUser = userRepository.findByCommonName(username).get(0);
+            List<vizzyy.domain.User> localUser = userRepository.findByCommonName(username);
 
-            if(localUser != null) {
+            if(localUser.size() > 0) {
                 System.out.println("User details: " + localUser.toString());
-                return new User(username, "", getRole(localUser.getRole()));
+                return new User(username, "", getRole(localUser.get(0).getRole()));
             } else {
                 System.out.println("User not in DB: "+ username);
                 return new User(username, "", getRole("default"));
