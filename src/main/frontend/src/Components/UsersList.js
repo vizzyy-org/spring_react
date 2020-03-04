@@ -36,7 +36,7 @@ class UsersList extends React.Component{
             <div className="Users" >
                 <Row>
                     <Col xs={6}>
-                        <a href="/users/list"><button className="button1">List</button></a>
+                        <a href="/users"><button className="button1">List</button></a>
                     </Col>
                     <Col xs={6}>
                         <a href="/users/form"><button className="button1">form</button></a>

@@ -46,9 +46,6 @@ function App() {
                     <Route path="/users/form">
                         <UsersForm/>
                     </Route>
-                    <Route path="/users/list">
-                        <UsersList/>
-                    </Route>
                     <Route path="/users">
                         <UsersList/>
                     </Route>

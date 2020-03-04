@@ -12,7 +12,7 @@ class Users extends React.Component{
                 <Grid >
                     <Row>
                         <Col xs={6}>
-                            <a href="/users/list"><button className="button1">List</button></a>
+                            <a href="/users"><button className="button1">List</button></a>
                         </Col>
                         <Col xs={6}>
                             <a href="/users/form"><button className="button1">form</button></a>
