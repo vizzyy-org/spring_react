@@ -8,7 +8,6 @@ public class User {
 
     @Id
     @Column(name="user_id")
-//    @GeneratedValue
     private Long id;
 
     @Column(name="common_name")

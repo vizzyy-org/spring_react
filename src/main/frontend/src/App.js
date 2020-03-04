@@ -12,8 +12,10 @@ import Door from "./Components/Door";
 import Video from "./Components/Video";
 import UsersForm from "./Components/UsersForm";
 import UsersList from "./Components/UsersList";
-import Users from "./Components/Users";
 import Logs from "./Components/Logs";
+import VideoOculus from "./Components/VideoOculus";
+import VideoVox from "./Components/VideoVox";
+import VideoRec from "./Components/VideoRec";
 
 function App() {
     return (
@@ -28,6 +30,15 @@ function App() {
                     </Route>
                     <Route path="/door">
                         <Door/>
+                    </Route>
+                    <Route path="/video/door">
+                        <VideoVox/>
+                    </Route>
+                    <Route path="/video/oculus">
+                        <VideoOculus/>
+                    </Route>
+                    <Route path="/video/recordings">
+                        <VideoRec/>
                     </Route>
                     <Route path="/video">
                         <Video/>

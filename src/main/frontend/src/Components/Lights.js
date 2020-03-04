@@ -15,7 +15,7 @@ class Lights extends React.Component {
     render() {
         return (
             <div className="Content">
-                <br></br>
+                <br/>
                 <Grid >
                     <Row>
                         <Col xs={4} >
@@ -28,8 +28,8 @@ class Lights extends React.Component {
                             TABLE
                         </Col>
                     </Row>
-                    <br></br>
-                    <br></br>
+                    <br/>
+                    <br/>
                     <Row>
                         <Col xs={4} >
                             <button className="button1" onClick={() => fetchAPI("one", true)}>On</button>
@@ -41,7 +41,7 @@ class Lights extends React.Component {
                             <button className="button1" onClick={() => fetchAPI("three", true)}>On</button>
                         </Col>
                     </Row>
-                    <br></br>
+                    <br/>
                     <Row>
                         <Col xs={4} >
                             <button className="button1" onClick={() => fetchAPI("one", false)}>Off</button>

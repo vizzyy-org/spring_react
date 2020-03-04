@@ -1,7 +1,7 @@
 import React from "react";
 import {Col, Grid, Row} from "react-flexbox-grid";
 
-class Video extends React.Component{
+class VideoVox extends React.Component{
     render() {
         return (
             <div className="Content">
@@ -19,9 +19,11 @@ class Video extends React.Component{
                         </Col>
                     </Row>
                 </Grid>
+                <br/>
+                <img className="stream" src="/video/door"  alt="door"/>
             </div>
         );
     }
 }
 
-export default Video;
+export default VideoVox;

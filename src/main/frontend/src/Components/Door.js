@@ -15,21 +15,21 @@ class Door extends React.Component{
     render() {
         return (
             <div className="Content">
-                <br></br>
+                <br/>
                 <Grid >
                     <Row>
                         <Col xs={12} >
                             DOOR
                         </Col>
                     </Row>
-                    <br></br>
-                    <br></br>
+                    <br/>
+                    <br/>
                     <Row>
                         <Col xs={12} >
                             <button className="button1" onClick={() => fetchAPI("open")}>Open</button>
                         </Col>
                     </Row>
-                    <br></br>
+                    <br/>
                     <Row>
                         <Col xs={12} >
                             <button className="button1" onClick={() => fetchAPI("close")}>Close</button>
