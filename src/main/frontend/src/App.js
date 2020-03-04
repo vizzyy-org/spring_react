@@ -37,7 +37,7 @@ function App() {
                     <Route path="/video/oculus">
                         <VideoOculus/>
                     </Route>
-                    <Route path="/video/recordings">
+                    <Route path="/video/motion">
                         <VideoRec/>
                     </Route>
                     <Route path="/video">

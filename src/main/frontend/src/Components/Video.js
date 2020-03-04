@@ -12,7 +12,7 @@ class Video extends React.Component{
                             <a href="/video/oculus"><button className="button1">OUT</button></a>
                         </Col>
                         <Col xs={4} >
-                            <a href="/video/recordings"><button className="button1">REC</button></a>
+                            <a href="/video/motion"><button className="button1">REC</button></a>
                         </Col>
                         <Col xs={4} >
                             <a href="/video/door"><button className="button1">VOX</button></a>
