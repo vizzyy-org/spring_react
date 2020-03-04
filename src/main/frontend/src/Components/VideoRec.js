@@ -112,7 +112,7 @@ class Video extends React.Component{
                         </Col>
                     </Row>
                     <br/><br/>
-                    <img className="stream" id="img"/>
+                    <img className="stream" id="img" alt=""/>
                     <div className="Big-Text" id="progress"/>
                     <br/><br/>
                     <Row>

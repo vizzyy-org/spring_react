@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router-dom";
 import {Col, Grid, Row} from "react-flexbox-grid";
 
 class Users extends React.Component{
@@ -12,8 +11,12 @@ class Users extends React.Component{
                 </p>
                 <Grid >
                     <Row>
-                        <Col xs><Link to="/users/list">List</Link></Col>
-                        <Col xs><Link to="/users/form">Register</Link></Col>
+                        <Col xs={6}>
+                            <a href="/users/list"><button className="button1">List</button></a>
+                        </Col>
+                        <Col xs={6}>
+                            <a href="/users/form"><button className="button1">form</button></a>
+                        </Col>
                     </Row>
                 </Grid>
             </div>

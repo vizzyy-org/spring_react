@@ -34,15 +34,14 @@ class UsersList extends React.Component{
     render() {
         return (
             <div className="Users" >
-                <p>
-                    Manage Users
-                </p>
-                <Grid >
-                    <Row>
-                        <Col xs><Link to="/users/list">List</Link></Col>
-                        <Col xs><Link to="/users/form">Register</Link></Col>
-                    </Row>
-                </Grid>
+                <Row>
+                    <Col xs={6}>
+                        <a href="/users/list"><button className="button1">List</button></a>
+                    </Col>
+                    <Col xs={6}>
+                        <a href="/users/form"><button className="button1">form</button></a>
+                    </Col>
+                </Row>
                 <br/><br/>
                 <Grid >
                     {this.state.users.map(user => {
