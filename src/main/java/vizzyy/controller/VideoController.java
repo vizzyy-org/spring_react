@@ -2,7 +2,6 @@ package vizzyy.controller;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,18 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import vizzyy.domain.Motion;
 import vizzyy.domain.MotionRepository;
 import vizzyy.service.LoggingService;
 import vizzyy.service.S3ResourceService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.util.Collections;
 
 @RestController
 @RequestMapping(value = "/video")
-@PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
 public class VideoController {
 
     @Autowired
@@ -35,6 +31,7 @@ public class VideoController {
     private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/cam.url").toArray()[0];
 
     @RequestMapping("/oculus")
+    @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
     public void oculus(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/oculus...");
         RestTemplate restTemplate = new RestTemplate();
@@ -53,6 +50,7 @@ public class VideoController {
     }
 
     @RequestMapping("/door")
+    @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
     public void door(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/door...");
 
@@ -72,6 +70,7 @@ public class VideoController {
     }
 
     @RequestMapping("/recordings")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public byte[] recordings(@RequestParam int spot) {
         loggingService.addEntry(String.format("Calling /video/recordings?spot=%s...", spot));
         return motionRepository.findImageAtPlace(spot).getImage();
