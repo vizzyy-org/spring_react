@@ -17,7 +17,7 @@ public class LogsController {
     @RequestMapping(value = "/logs")
     @ResponseBody
     public String logs(){
-        loggingService.addEntry("Called /logs...");
+//        loggingService.addEntry("Called /logs...");
 
         return loggingService.printLogs();
     }

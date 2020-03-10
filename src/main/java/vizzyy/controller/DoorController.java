@@ -24,7 +24,7 @@ public class DoorController {
     @RequestMapping(value = "/open")
     public String open() {
         String entry = "User BLEEP BLOOP opened door at BLAH BLAH BLAH time.";
-        loggingService.addEntry("Calling /door/open?entry="+entry);
+        loggingService.addEntry("Calling /door/open?entry=");
         String res = restTemplate.getForObject(ddns + ":9000/open?entry="+entry, String.class);
         return res;
     }
@@ -32,7 +32,7 @@ public class DoorController {
     @RequestMapping(value = "/close")
     public String close() {
         String entry = "User BLEEP BLOOP closed door at BLAH BLAH BLAH time.";
-        loggingService.addEntry("Calling /door/close?entry="+entry);
+        loggingService.addEntry("Calling /door/close?entry=");
         String res = restTemplate.getForObject(ddns + ":9000/close?entry="+entry, String.class);
         return res;
     }
