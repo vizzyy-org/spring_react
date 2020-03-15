@@ -1,6 +1,5 @@
 import React from "react";
 import {Col, Grid, Row} from "react-flexbox-grid";
-import {Link} from "react-router-dom";
 
 class UsersForm extends React.Component{
     constructor() {
@@ -37,14 +36,16 @@ class UsersForm extends React.Component{
 
         return (
             <div className="Users">
-                <Row>
-                    <Col xs={6}>
-                        <a href="/users"><button className="button1">List</button></a>
-                    </Col>
-                    <Col xs={6}>
-                        <a href="/users/form"><button className="button1">form</button></a>
-                    </Col>
-                </Row>
+                <Grid>
+                    <Row>
+                        <Col xs={6}>
+                            <a href="/users"><button className="button1">List</button></a>
+                        </Col>
+                        <Col xs={6}>
+                            <a href="/users/form"><button className="button1">form</button></a>
+                        </Col>
+                    </Row>
+                </Grid>
                 <br/><br/>
                 Create New User
                 <br/><br/>

@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.11'
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -71,4 +72,4 @@ copyWebApp.dependsOn appNpmBuild
 // comment this out for local development -- since
 // webpack is already running we don't need to force
 // a frontend-compile every time we backend-compile
-compileJava.dependsOn copyWebApp
+//compileJava.dependsOn copyWebApp
