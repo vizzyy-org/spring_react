@@ -72,4 +72,4 @@ copyWebApp.dependsOn appNpmBuild
 // comment this out for local development -- since
 // webpack is already running we don't need to force
 // a frontend-compile every time we backend-compile
-//compileJava.dependsOn copyWebApp
+compileJava.dependsOn copyWebApp
