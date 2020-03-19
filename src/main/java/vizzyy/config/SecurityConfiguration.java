@@ -41,13 +41,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     LoggingService loggingService;
 
+    @Autowired
+    SessionRegistry sessionRegistry;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated()
+        http
+                .sessionManagement()
                 .and()
-                .x509()
-                .subjectPrincipalRegex("CN=(.*?)(?:,|$)")
-                .userDetailsService(userDetailsService());
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .x509().subjectPrincipalRegex("CN=(.*?)(?:,|$)").userDetailsService(userDetailsService());
     }
 
     @Bean

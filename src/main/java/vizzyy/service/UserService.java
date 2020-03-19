@@ -67,6 +67,7 @@ public class UserService {
     }
 
     public void expireUserSessions(String username) {
+        loggingService.addEntry("attempting to expire sessions... ");
         for (Object principal : sessionRegistry.getAllPrincipals()) {
 
             if (principal instanceof org.springframework.security.core.userdetails.User) {
