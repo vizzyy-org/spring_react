@@ -47,11 +47,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement()
-                .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
-                .x509().subjectPrincipalRegex("CN=(.*?)(?:,|$)").userDetailsService(userDetailsService());
+                .x509().subjectPrincipalRegex("CN=(.*?)(?:,|$)").userDetailsService(userDetailsService())
+                .and()
+                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry);
     }
 
     @Bean
