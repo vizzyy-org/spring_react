@@ -24,6 +24,9 @@ public class UserService {
     @Autowired
     SessionRegistry sessionRegistry;
 
+    @Autowired
+    LoggingService loggingService;
+
     public List<User> getUsers(){
         return userRepository.findAll();
     }
@@ -65,13 +68,18 @@ public class UserService {
 
     public void expireUserSessions(String username) {
         for (Object principal : sessionRegistry.getAllPrincipals()) {
+
             if (principal instanceof org.springframework.security.core.userdetails.User) {
                 UserDetails userDetails = (UserDetails) principal;
+                loggingService.addEntry("expireUserSessions currently inspecting: "+ userDetails.getUsername());
                 if (userDetails.getUsername().equals(username)) {
                     for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, true)) {
+                        loggingService.addEntry("expiring "+username+": "+information.getPrincipal()+" - "+ information.getLastRequest());
                         information.expireNow();
                     }
                 }
+            } else {
+                loggingService.addEntry("not User???");
             }
         }
     }
