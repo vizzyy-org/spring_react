@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import vizzyy.config.SecurityConfiguration;
 import vizzyy.domain.User;
 import vizzyy.service.KeyService;
 import vizzyy.service.LoggingService;
@@ -26,6 +27,9 @@ public class UsersController {
 
     @Autowired
     LoggingService loggingService;
+
+    @Autowired
+    SecurityConfiguration securityConfiguration;
 
     @RequestMapping(value= "/list")
     public List<User> users(){
@@ -49,6 +53,7 @@ public class UsersController {
     public void delete(@RequestParam String CN) {
         loggingService.addEntry(String.format("Calling /users/remove?CN=%s", CN));
         userService.deleteUser(CN);
+        securityConfiguration.expireUserSessions(CN);
         loggingService.addEntry(String.format("Successfully delete user: %s", CN));
     }
 }
