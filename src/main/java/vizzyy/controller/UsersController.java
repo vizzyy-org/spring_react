@@ -28,9 +28,6 @@ public class UsersController {
     @Autowired
     LoggingService loggingService;
 
-    @Autowired
-    SecurityConfiguration securityConfiguration;
-
     @RequestMapping(value= "/list")
     public List<User> users(){
         loggingService.addEntry("Calling /users/list");
@@ -53,7 +50,7 @@ public class UsersController {
     public void delete(@RequestParam String CN) {
         loggingService.addEntry(String.format("Calling /users/remove?CN=%s", CN));
         userService.deleteUser(CN);
-        securityConfiguration.expireUserSessions(CN);
+        userService.expireUserSessions(CN);
         loggingService.addEntry(String.format("Successfully delete user: %s", CN));
     }
 }

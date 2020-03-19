@@ -41,9 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     LoggingService loggingService;
 
-    @Autowired
-    SessionRegistry sessionRegistry;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated()
@@ -69,15 +66,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         };
     }
 
-    @Bean
-    SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
-    }
-    @Bean
-    public static ServletListenerRegistrationBean httpSessionEventPublisher() {	//(5)
-        return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
-    }
-
     private List<GrantedAuthority> getRole(String role){
         String authority;
         switch (role) {
@@ -94,31 +82,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
     }
 
-    public void removeRole(String role){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        List<GrantedAuthority> updatedAuthorities = Collections.emptyList();
-//                auth.getAuthorities().stream()
-//                        .filter(r -> !role.equals(r.getAuthority()))
-//                        .collect(Collectors.toList());
-
-        Authentication newAuth = new UsernamePasswordAuthenticationToken(
-                auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
-
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
-    }
-
-    public void expireUserSessions(String username) {
-        for (Object principal : sessionRegistry.getAllPrincipals()) {
-            if (principal instanceof User) {
-                UserDetails userDetails = (UserDetails) principal;
-                if (userDetails.getUsername().equals(username)) {
-                    for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, true)) {
-                        information.expireNow();
-                    }
-                }
-            }
-        }
-    }
 
 }
