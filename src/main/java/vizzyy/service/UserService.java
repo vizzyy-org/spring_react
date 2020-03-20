@@ -14,6 +14,7 @@ import vizzyy.domain.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -55,10 +56,10 @@ public class UserService {
     public void removeRole(String role){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        List<GrantedAuthority> updatedAuthorities = Collections.emptyList();
-//                auth.getAuthorities().stream()
-//                        .filter(r -> !role.equals(r.getAuthority()))
-//                        .collect(Collectors.toList());
+        List<GrantedAuthority> updatedAuthorities =
+                auth.getAuthorities().stream()
+                        .filter(r -> !role.equals(r.getAuthority()))
+                        .collect(Collectors.toList());
 
         Authentication newAuth = new UsernamePasswordAuthenticationToken(
                 auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);

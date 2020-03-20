@@ -19,8 +19,9 @@ public class Application {
 	SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
 	}
+
 	@Bean
-	public static ServletListenerRegistrationBean httpSessionEventPublisher() {	//(5)
+	public static ServletListenerRegistrationBean httpSessionEventPublisher() {
 		return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
 	}
 

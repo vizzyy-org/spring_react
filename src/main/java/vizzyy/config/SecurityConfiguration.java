@@ -63,8 +63,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 System.out.println("User details: " + localUser.toString());
                 return new User(username, "", getRole(localUser.get(0).getRole()));
             } else {
-//                System.out.println("User not in DB: "+ username);
-//                return new User(username, "", getRole("default"));
                 return null;
             }
         };
