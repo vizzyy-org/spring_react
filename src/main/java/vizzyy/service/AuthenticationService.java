@@ -22,7 +22,7 @@ public class AuthenticationService {
     public static String getUserRole(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserRoles = Arrays.toString(authentication.getAuthorities().toArray());
+            String currentUserRoles = authentication.getAuthorities().iterator().next().toString();
             return currentUserRoles;
         }
         return "Unknown role!";
