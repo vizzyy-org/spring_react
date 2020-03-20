@@ -15,14 +15,4 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean
-	SessionRegistry sessionRegistry() {
-		return new SessionRegistryImpl();
-	}
-
-	@Bean
-	public static ServletListenerRegistrationBean httpSessionEventPublisher() {
-		return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
-	}
-
 }

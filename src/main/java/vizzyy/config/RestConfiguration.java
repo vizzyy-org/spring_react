@@ -54,6 +54,7 @@ public class RestConfiguration {
                     .loadKeyMaterial(keystore, keystoreSecret.toCharArray())
                     .loadTrustMaterial(truststore, null).build(); //TS secret?
 
+            //TODO: Sort out this hostname validation
             HostnameVerifier hostnameverifier = null;
 
             SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslcontext,
@@ -66,7 +67,7 @@ public class RestConfiguration {
 
             requestFactory.setHttpClient(httpClient);
 
-            System.out.println("Created Rest template!");
+//            System.out.println("Created Rest template!");
 
             return new RestTemplate(requestFactory);
     }
