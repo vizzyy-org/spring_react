@@ -31,10 +31,10 @@ function App() {
                     <Route path="/door">
                         <Door/>
                     </Route>
-                    <Route path="/video/door">
+                    <Route path="/video/stream/door">
                         <VideoVox/>
                     </Route>
-                    <Route path="/video/oculus">
+                    <Route path="/video/stream/oculus">
                         <VideoOculus/>
                     </Route>
                     <Route path="/video/motion">
