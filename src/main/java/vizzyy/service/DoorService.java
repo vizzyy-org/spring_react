@@ -34,6 +34,8 @@ public class DoorService {
 
     public void setDoorOpen(boolean doorOpen) {
         loggingService.addEntry("Set door state - door is opened: "+ doorOpen);
+
+
         isDoorOpen = doorOpen;
     }
 }

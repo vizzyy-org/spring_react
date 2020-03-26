@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import vizzyy.service.DoorService;
-import vizzyy.service.LoggingService;
-import vizzyy.service.S3ResourceService;
 
 @RestController
 @RequestMapping(value = "/door")
@@ -29,7 +26,7 @@ public class DoorController {
         return doorService.closeDoor();
     }
 
-    @RequestMapping(value = "/state", method = RequestMethod.POST)
+    @RequestMapping(value = "/setstate", method = RequestMethod.GET)
     public void setState(@RequestParam boolean state){
         doorService.setDoorOpen(state);
     }
