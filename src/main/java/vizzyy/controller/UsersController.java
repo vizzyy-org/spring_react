@@ -62,7 +62,7 @@ public class UsersController {
     @RequestMapping(value = "/role")
     @PreAuthorize("hasAnyAuthority('ROLE_USER, ROLE_POWER, ROLE_ADMIN')")
     public RoleResponse getRole() {
-        loggingService.addEntry(String.format("Checking %s's role...", getUserRole()));
+        loggingService.addEntry(String.format("Checking %s's role... %s", getUserName(), getUserRole()));
         return new RoleResponse(getUserRole(), getUserName());
     }
 }
