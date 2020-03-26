@@ -34,7 +34,7 @@ public class UserService {
 
     public User createUser(String CN, String role){
         int size = getUsers().size() + 1;
-        User newUser = new User((long) size, CN, role);
+        User newUser = new User((long) size, CN, role, true);
         return userRepository.save(newUser);
     }
 
