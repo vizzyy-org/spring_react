@@ -25,7 +25,7 @@ public class LoggingService {
 
     public void addEntry(String entry){
         String user = " " + AuthenticationService.getUserName();
-        log.info(entry + user);
+        log.info(entry);
     }
 
     public String printLogs(){

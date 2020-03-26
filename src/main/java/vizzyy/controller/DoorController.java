@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import vizzyy.controller.responses.DoorResponse;
 import vizzyy.service.DoorService;
 
 @RestController
@@ -32,8 +33,8 @@ public class DoorController {
     }
 
     @RequestMapping(value = "/state", method = RequestMethod.GET)
-    public boolean getState(){
-        return doorService.isDoorOpen();
+    public DoorResponse getState(){
+        return new DoorResponse(doorService.isDoorOpen());
     }
 
 }

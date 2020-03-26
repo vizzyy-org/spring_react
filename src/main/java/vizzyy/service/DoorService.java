@@ -19,13 +19,13 @@ public class DoorService {
 
     public String openDoor(){
         setDoorOpen(true);
-        String entry = String.format("Opened by: %s", AuthenticationService.getUserName());
+        String entry = String.format("Door opened by: %s", AuthenticationService.getUserName());
         return restTemplate.getForObject(ddns + ":9000/open?entry="+entry, String.class);
     }
 
     public String closeDoor(){
         setDoorOpen(false);
-        String entry = String.format("Closed by: %s", AuthenticationService.getUserName());
+        String entry = String.format("Door closed by: %s", AuthenticationService.getUserName());
         return restTemplate.getForObject(ddns + ":9000/close?entry="+entry, String.class);
     }
 
