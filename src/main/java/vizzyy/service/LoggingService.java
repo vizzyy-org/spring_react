@@ -20,7 +20,7 @@ public class LoggingService {
 
     private Logger log = LoggerFactory.getLogger(LoggingService.class);
 
-    @Value("${logging.path}")
+    @Value("${logging.file.path}")
     private String logPath;
 
     public void addEntry(String entry){
