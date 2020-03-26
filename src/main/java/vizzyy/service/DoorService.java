@@ -30,6 +30,8 @@ public class DoorService {
     }
 
     public boolean isDoorOpen() {
+        String remoteValue = restTemplate.getForObject(ddns + ":9000/status", String.class);
+        loggingService.addEntry("Remote value of door: "+remoteValue);
         loggingService.addEntry("Get door state - door is opened: "+isDoorOpen);
         return isDoorOpen;
     }

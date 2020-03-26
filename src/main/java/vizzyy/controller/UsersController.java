@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vizzyy.controller.responses.RoleResponse;
 import vizzyy.domain.User;
+import vizzyy.service.AuthenticationService;
 import vizzyy.service.KeyService;
 import vizzyy.service.LoggingService;
 import vizzyy.service.UserService;
@@ -32,7 +33,7 @@ public class UsersController {
 
     @RequestMapping(value= "/list")
     public List<User> users(){
-        loggingService.addEntry("Calling /users/list");
+        loggingService.addEntry(String.format("%s calling /users/list", AuthenticationService.getUserName()));
         return userService.getUsers();
     }
 
