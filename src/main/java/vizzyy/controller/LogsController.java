@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import vizzyy.service.LoggingService;
 
 @RestController
-@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
 public class LogsController {
 
     @Autowired
@@ -17,12 +16,14 @@ public class LogsController {
 
     @RequestMapping(value = "/logs")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public String logs(){
         return loggingService.printLogs();
     }
 
     @RequestMapping(value = "/log/append")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_POWER')")
     public void remoteAppend(@RequestParam String entry){
         loggingService.addEntry(entry);
     }
