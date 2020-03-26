@@ -19,12 +19,14 @@ public class DoorService {
 
     public String openDoor(){
         setDoorOpen(true);
-        return restTemplate.getForObject(ddns + ":9000/open?entry=test", String.class);
+        String entry = String.format("Opened by: %s", AuthenticationService.getUserName());
+        return restTemplate.getForObject(ddns + ":9000/open?entry="+entry, String.class);
     }
 
     public String closeDoor(){
         setDoorOpen(false);
-        return restTemplate.getForObject(ddns + ":9000/close?entry=test", String.class);
+        String entry = String.format("Closed by: %s", AuthenticationService.getUserName());
+        return restTemplate.getForObject(ddns + ":9000/close?entry="+entry, String.class);
     }
 
     public boolean isDoorOpen() {
@@ -33,9 +35,6 @@ public class DoorService {
     }
 
     public void setDoorOpen(boolean doorOpen) {
-        loggingService.addEntry("Set door state - door is opened: "+ doorOpen);
-
-
         isDoorOpen = doorOpen;
     }
 }
