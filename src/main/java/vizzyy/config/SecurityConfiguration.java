@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import vizzyy.domain.UserRepository;
 import vizzyy.service.LoggingService;
+import vizzyy.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     LoggingService loggingService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     SessionRegistry sessionRegistry;
@@ -60,30 +64,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             List<vizzyy.domain.User> localUser = userRepository.findByCommonName(username);
 
             if(localUser.size() > 0) {
-                System.out.println("User details: " + localUser.toString());
-                return new User(username, "", getRole(localUser.get(0).getRole()));
+                loggingService.addEntry("User details: " + localUser.toString());
+                return new User(username, "", userService.getRole(localUser.get(0).getRole()));
             } else {
                 return null;
             }
         };
     }
-
-    private List<GrantedAuthority> getRole(String role){
-        String authority;
-        switch (role) {
-            case "owner":
-                authority = "ROLE_ADMIN";
-                break;
-            case "admin":
-            case "power":
-                authority = "ROLE_POWER";
-                break;
-            default:
-                authority = "ROLE_BASE";
-        }
-        return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
-    }
-
-
 
 }

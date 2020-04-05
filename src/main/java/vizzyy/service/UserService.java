@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -28,6 +29,24 @@ public class UserService {
     @Autowired
     LoggingService loggingService;
 
+    public List<GrantedAuthority> getRole(String role){
+        String authority;
+        switch (role) {
+            case "owner":
+                authority = "ROLE_OWNER";
+                break;
+            case "admin":
+                authority = "ROLE_ADMIN";
+                break;
+            case "power":
+                authority = "ROLE_POWER";
+                break;
+            default:
+                authority = "ROLE_BASE";
+        }
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
+    }
+
     public List<User> getUsers(){
         return userRepository.findAll();
     }
@@ -39,8 +58,6 @@ public class UserService {
     }
 
     public void deleteUser(String CN){
-
-
         User user = getUser(CN);
         if(user != null && !user.getRole().equals("owner"))
             userRepository.delete(user);

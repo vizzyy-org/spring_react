@@ -34,7 +34,7 @@ public class DoorService {
         loggingService.addEntry("Remote value of door: "+remoteValue);
         String localValue = isDoorOpen ? "Opened" : "Closed";
         loggingService.addEntry("Get door state - door is: " + localValue);
-        return isDoorOpen;
+        return remoteValue != null && remoteValue.equals("Opened");
     }
 
     public void setDoorOpen(boolean doorOpen) {
