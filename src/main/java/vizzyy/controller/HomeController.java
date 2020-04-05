@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vizzyy.service.AuthenticationService;
 
 @RestController
-@PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_POWER', 'ROLE_POWER')")
+@PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_POWER', 'ROLE_ADMIN', 'ROLE_OWNER')")
 public class HomeController {
 
     @RequestMapping(value = "/greeting")

@@ -9,7 +9,7 @@ import vizzyy.service.LightsService;
 
 @RestController
 @RequestMapping(value = "/lights")
-@PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_POWER', 'ROLE_ADMIN')")
+@PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_POWER', 'ROLE_ADMIN', 'ROLE_OWNER')")
 public class LightsController {
 
     @Autowired

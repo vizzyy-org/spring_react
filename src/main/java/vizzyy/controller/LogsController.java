@@ -16,14 +16,14 @@ public class LogsController {
 
     @RequestMapping(value = "/logs")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
     public String logs(){
         return loggingService.printLogs();
     }
 
     @RequestMapping(value = "/log/append")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_POWER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN', 'ROLE_OWNER')")
     public void remoteAppend(@RequestParam String entry){
         loggingService.addEntry(entry);
     }

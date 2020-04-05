@@ -31,7 +31,7 @@ public class VideoController {
     private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/cam.url").toArray()[0];
 
     @RequestMapping("/oculus")
-    @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
     public void oculus(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/oculus...");
         RestTemplate restTemplate = new RestTemplate();
@@ -50,7 +50,7 @@ public class VideoController {
     }
 
     @RequestMapping("/door")
-    @PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
     public void door(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/door...");
 
@@ -70,7 +70,7 @@ public class VideoController {
     }
 
     @RequestMapping("/recordings")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
     public byte[] recordings(@RequestParam int spot) {
         loggingService.addEntry(String.format("Calling /video/recordings?spot=%s...", spot));
         return motionRepository.findImageAtPlace(spot).getImage();

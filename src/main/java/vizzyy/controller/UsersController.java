@@ -38,7 +38,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/generate")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
     public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) throws IOException, InterruptedException {
         loggingService.addEntry(String.format("Calling /users/generate?CN=%s&role=%s&pw=%s", CN, role, pw));
         keyService.generatePair(CN);
@@ -51,7 +51,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/delete")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
     public void delete(@RequestParam String CN) {
         loggingService.addEntry(String.format("Calling /users/remove?CN=%s", CN));
         userService.deleteUser(CN);
@@ -60,7 +60,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/role")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER, ROLE_POWER, ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER, ROLE_POWER, ROLE_ADMIN, ROLE_OWNER')")
     public RoleResponse getRole() {
         loggingService.addEntry(String.format("Checking %s's role... %s", getUserName(), getUserRole()));
         return new RoleResponse(getUserRole(), getUserName());

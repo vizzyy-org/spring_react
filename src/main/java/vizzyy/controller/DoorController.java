@@ -11,7 +11,7 @@ import vizzyy.service.DoorService;
 
 @RestController
 @RequestMapping(value = "/door")
-@PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN')")
+@PreAuthorize("hasAnyAuthority('ROLE_POWER', 'ROLE_ADMIN', 'ROLE_OWNER')")
 public class DoorController {
 
     @Autowired
