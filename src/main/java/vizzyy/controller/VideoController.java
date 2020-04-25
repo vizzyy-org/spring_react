@@ -38,8 +38,7 @@ public class VideoController {
         loggingService.addEntry("Calling /video/oculus...");
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
 
-        RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(500))
-                .setReadTimeout(Duration.ofSeconds(500)).build();
+        RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(500)).setReadTimeout(Duration.ofSeconds(500)).build();
 
         restTemplate.execute(
                 URI.create(cameras + ":9003"),
