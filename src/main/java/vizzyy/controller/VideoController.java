@@ -1,7 +1,7 @@
 package vizzyy.controller;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,8 +15,13 @@ import vizzyy.service.LoggingService;
 import vizzyy.service.S3ResourceService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping(value = "/video")
@@ -28,6 +33,9 @@ public class VideoController {
     @Autowired
     MotionRepository motionRepository;
 
+    @Value("${rest.stream.limit}")
+    String streamLengthMinutes;
+
     private static String voxAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/vox.password").toArray()[0];
     private static String oculusAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/oculus.password").toArray()[0];
     private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/cam.url").toArray()[0];
@@ -38,7 +46,10 @@ public class VideoController {
         loggingService.addEntry("Calling /video/oculus...");
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
 
-        RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(500)).setReadTimeout(Duration.ofSeconds(500)).build();
+        RestTemplate restTemplate = restTemplateBuilder
+                .setConnectTimeout(Duration.ofSeconds(500))
+                .setReadTimeout(Duration.ofSeconds(500))
+                .build();
 
         restTemplate.execute(
                 URI.create(cameras + ":9003"),
@@ -48,7 +59,7 @@ public class VideoController {
                 },
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    IOUtils.copy(responseExtractor.getBody(), response.getOutputStream());
+                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
                     return null;
                 }
         );
@@ -59,7 +70,13 @@ public class VideoController {
     public void door(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/door...");
 
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+
+        RestTemplate restTemplate = restTemplateBuilder
+                .setConnectTimeout(Duration.ofSeconds(60))
+                .setReadTimeout(Duration.ofSeconds(60))
+                .build();
+
         restTemplate.execute(
                 URI.create(cameras + ":9002"),
                 HttpMethod.GET,
@@ -68,10 +85,11 @@ public class VideoController {
                 },
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    IOUtils.copy(responseExtractor.getBody(), response.getOutputStream());
+                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
                     return null;
                 }
         );
+
     }
 
     @RequestMapping("/recordings")
@@ -79,6 +97,26 @@ public class VideoController {
     public byte[] recordings(@RequestParam int spot) {
         loggingService.addEntry(String.format("Calling /video/recordings?spot=%s...", spot));
         return motionRepository.findImageAtPlace(spot).getImage();
+    }
+
+    // Custom implementation of IOUtils.copy(stream)
+    // Allows us to close stream so it is not endlessly copying in>out
+    public void copyLarge(final InputStream input, final OutputStream output)
+            throws IOException {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime limit = now.plus(Long.parseLong(streamLengthMinutes), ChronoUnit.MINUTES);
+
+        byte[] buffer = new byte[4096];
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            now = LocalDateTime.now();
+            if(now.isAfter(limit)) {
+                loggingService.addEntry("Stream limit reached.");
+                break;
+            }
+            output.write(buffer, 0, n);
+        }
     }
 
 }
