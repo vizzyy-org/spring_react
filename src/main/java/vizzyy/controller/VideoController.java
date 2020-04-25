@@ -2,6 +2,7 @@ package vizzyy.controller;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import vizzyy.service.S3ResourceService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.time.Duration;
 
 @RestController
 @RequestMapping(value = "/video")
@@ -34,7 +36,11 @@ public class VideoController {
     @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
     public void oculus(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/oculus...");
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+
+        RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(500))
+                .setReadTimeout(Duration.ofSeconds(500)).build();
+
         restTemplate.execute(
                 URI.create(cameras + ":9003"),
                 HttpMethod.GET,
