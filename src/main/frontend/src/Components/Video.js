@@ -8,9 +8,9 @@ class Video extends React.Component{
                 <br/>
                 <Grid >
                     <Row>
-                        <Col xs={4} >
-                            <a href="/video/stream/oculus"><button className="button1">OUT</button></a>
-                        </Col>
+                        {/*<Col xs={4} >*/}
+                        {/*    <a href="/video/stream/oculus"><button className="button1">OUT</button></a>*/}
+                        {/*</Col>*/}
                         <Col xs={4} >
                             <a href="/video/motion"><button className="button1">REC</button></a>
                         </Col>

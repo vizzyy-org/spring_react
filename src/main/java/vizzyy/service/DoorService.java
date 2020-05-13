@@ -15,22 +15,22 @@ public class DoorService {
 
     private boolean isDoorOpen = false;
 
-    private static String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
+    private static final String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
 
     public String openDoor(){
         setDoorOpen(true);
         String entry = String.format("Door opened by: %s", AuthenticationService.getUserName());
-        return restTemplate.getForObject(ddns + ":9000/open?entry="+entry, String.class);
+        return restTemplate.getForObject(ddns + "/door/open?entry="+entry, String.class);
     }
 
     public String closeDoor(){
         setDoorOpen(false);
         String entry = String.format("Door closed by: %s", AuthenticationService.getUserName());
-        return restTemplate.getForObject(ddns + ":9000/close?entry="+entry, String.class);
+        return restTemplate.getForObject(ddns + "/door/close?entry="+entry, String.class);
     }
 
     public boolean isDoorOpen() {
-        String remoteValue = restTemplate.getForObject(ddns + ":9000/status", String.class);
+        String remoteValue = restTemplate.getForObject(ddns + "/door/status", String.class);
         loggingService.addEntry("Remote value of door: "+remoteValue);
         String localValue = isDoorOpen ? "Opened" : "Closed";
         loggingService.addEntry("Get door state - door is: " + localValue);

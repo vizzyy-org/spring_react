@@ -13,19 +13,19 @@ public class LightsService {
     @Autowired
     RestTemplate restTemplate;
 
-    private static String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
+    private static final String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
 
     public String toggleLight(int lightNumber, boolean state) {
         String url = "";
         switch (lightNumber){
             case 1:
-                url = ":9001/light1?status=";
+                url = "/lights/light1?status=";
                 break;
             case 2:
-                url = ":9001/light2?status=";
+                url = "/lights/light2?status=";
                 break;
             case 3:
-                url = ":9007/light1?status=";
+                url = "/lights/light3?status=";
                 break;
         }
 
