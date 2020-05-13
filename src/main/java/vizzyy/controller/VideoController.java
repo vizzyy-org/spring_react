@@ -77,9 +77,7 @@ public class VideoController {
         sslRestTemplate.execute(
                 URI.create(cameras + "/video"),
                 HttpMethod.GET,
-                clientHttpRequest -> {
-                    clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+oculusAuth);
-                },
+                null,
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
