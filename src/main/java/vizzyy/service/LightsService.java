@@ -31,7 +31,7 @@ public class LightsService {
 
         loggingService.addEntry(String.format("Light %d toggled %b by %s", lightNumber, state, AuthenticationService.getUserName()));
 
-        return restTemplate.getForObject(ddns + url + state, String.class);
+        return restTemplate.getForObject("https://" + ddns + url + state, String.class);
 
     }
 }

@@ -20,17 +20,17 @@ public class DoorService {
     public String openDoor(){
         setDoorOpen(true);
         String entry = String.format("Door opened by: %s", AuthenticationService.getUserName());
-        return restTemplate.getForObject(ddns + "/door/open?entry="+entry, String.class);
+        return restTemplate.getForObject("https://" + ddns + "/door/open?entry="+entry, String.class);
     }
 
     public String closeDoor(){
         setDoorOpen(false);
         String entry = String.format("Door closed by: %s", AuthenticationService.getUserName());
-        return restTemplate.getForObject(ddns + "/door/close?entry="+entry, String.class);
+        return restTemplate.getForObject("https://" + ddns + "/door/close?entry="+entry, String.class);
     }
 
     public boolean isDoorOpen() {
-        String remoteValue = restTemplate.getForObject(ddns + "/door/status", String.class);
+        String remoteValue = restTemplate.getForObject("https://" + ddns + "/door/status", String.class);
         loggingService.addEntry("Remote value of door: "+remoteValue);
         String localValue = isDoorOpen ? "Opened" : "Closed";
         loggingService.addEntry("Get door state - door is: " + localValue);
