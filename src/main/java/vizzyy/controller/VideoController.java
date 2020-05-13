@@ -75,7 +75,7 @@ public class VideoController {
         loggingService.addEntry("Calling /video/door...");
 
         sslRestTemplate.execute(
-                URI.create(cameras + "/camera"),
+                URI.create(cameras + "/video"),
                 HttpMethod.GET,
                 clientHttpRequest -> {
                     clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+oculusAuth);
