@@ -14,7 +14,7 @@ public class LogsController {
     @Autowired
     LoggingService loggingService;
 
-    @RequestMapping(value = "/logs")
+    @RequestMapping(value = "/log")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
     public String logs(){

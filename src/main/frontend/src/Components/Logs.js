@@ -8,7 +8,7 @@ class Users extends React.Component{
                 <ScrollFollow
                     startFollowing={true}
                     render={({ follow, onScroll }) => (
-                        <LazyLog url="/logs" stream follow={follow} onScroll={onScroll} />
+                        <LazyLog url="/log" stream follow={follow} onScroll={onScroll} />
                     )}
                 />
             </div>

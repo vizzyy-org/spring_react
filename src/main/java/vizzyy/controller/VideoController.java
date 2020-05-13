@@ -36,7 +36,10 @@ public class VideoController {
     @Value("${rest.stream.limit}")
     String streamLengthMinutes;
 
-    private static String voxAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/vox.password").toArray()[0];
+    @Autowired
+    RestTemplate sslRestTemplate;
+
+//    private static String voxAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/vox.password").toArray()[0];
     private static String oculusAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/oculus.password").toArray()[0];
     private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/cam.url").toArray()[0];
 
@@ -44,15 +47,35 @@ public class VideoController {
     @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
     public void oculus(HttpServletResponse response) {
         loggingService.addEntry("Calling /video/oculus...");
-        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
 
-        RestTemplate restTemplate = restTemplateBuilder
-                .setConnectTimeout(Duration.ofSeconds(500))
-                .setReadTimeout(Duration.ofSeconds(500))
-                .build();
+//        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+//
+//        RestTemplate restTemplate = restTemplateBuilder
+//                .setConnectTimeout(Duration.ofSeconds(500))
+//                .setReadTimeout(Duration.ofSeconds(500))
+//                .build();
+//
+//        restTemplate.execute(
+//                URI.create(cameras + ":9003"),
+//                HttpMethod.GET,
+//                clientHttpRequest -> {
+//                    clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+oculusAuth);
+//                },
+//                responseExtractor -> {
+//                    response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
+//                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+//                    return null;
+//                }
+//        );
+    }
 
-        restTemplate.execute(
-                URI.create(cameras + ":9003"),
+    @RequestMapping("/door")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
+    public void door(HttpServletResponse response) {
+        loggingService.addEntry("Calling /video/door...");
+
+        sslRestTemplate.execute(
+                URI.create(cameras + "/camera"),
                 HttpMethod.GET,
                 clientHttpRequest -> {
                     clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+oculusAuth);
@@ -63,32 +86,26 @@ public class VideoController {
                     return null;
                 }
         );
-    }
 
-    @RequestMapping("/door")
-    @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
-    public void door(HttpServletResponse response) {
-        loggingService.addEntry("Calling /video/door...");
-
-        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-
-        RestTemplate restTemplate = restTemplateBuilder
-                .setConnectTimeout(Duration.ofSeconds(60))
-                .setReadTimeout(Duration.ofSeconds(60))
-                .build();
-
-        restTemplate.execute(
-                URI.create(cameras + ":9002"),
-                HttpMethod.GET,
-                clientHttpRequest -> {
-                    clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+voxAuth);
-                },
-                responseExtractor -> {
-                    response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
-                    return null;
-                }
-        );
+//        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+//
+//        RestTemplate restTemplate = restTemplateBuilder
+//                .setConnectTimeout(Duration.ofSeconds(60))
+//                .setReadTimeout(Duration.ofSeconds(60))
+//                .build();
+//
+//        restTemplate.execute(
+//                URI.create(cameras + ":9002"),
+//                HttpMethod.GET,
+//                clientHttpRequest -> {
+//                    clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+voxAuth);
+//                },
+//                responseExtractor -> {
+//                    response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
+//                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+//                    return null;
+//                }
+//        );
 
     }
 
