@@ -31,9 +31,6 @@ pipeline {
                         prTools.checkoutBranch(ISSUE_NUMBER, "vizzyy-org/spring_react")
 
                         sh('''
-                            cd src/main/frontend
-                            npm install
-                            cd ../../../
                             ./gradlew clean build
                         ''')
                     }
