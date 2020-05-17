@@ -25,7 +25,7 @@ class Door extends React.Component{
             .then(response => response.json())
             .then((data) => {
                 console.log("Door state: "+data.state);
-                let text = data.state == true ? "OPENED" : "CLOSED";
+                let text = data.state === true ? "OPENED" : "CLOSED";
                 this.setState({loaded: true, door: text})
             });
     }

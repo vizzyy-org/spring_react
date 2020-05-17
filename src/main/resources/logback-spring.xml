@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="5 seconds">
 
-    <property name="LOGS" value="./logs" />
+    <property name="LOGS" value="~/projects/spring_react/logs" />
 
     <appender name="Console"
               class="ch.qos.logback.core.ConsoleAppender">
