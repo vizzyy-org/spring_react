@@ -1,9 +1,7 @@
 package vizzyy.controller;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,9 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import vizzyy.service.LoggingService;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 
 @RestController
 public class LogsController {
@@ -31,13 +27,10 @@ public class LogsController {
         return loggingService.printLogs();
     }
 
-    @RequestMapping(
-            value = "/log/stream",
-            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
-    public @ResponseBody byte[] getFile() throws IOException {
-        InputStream in = new FileInputStream(logPath);
-        return IOUtils.toByteArray(in);
+    @RequestMapping(value = "/log/paged")
+    @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
+    public @ResponseBody List<String> getLogPage(@RequestParam int page) {
+        return loggingService.pagedLog(page);
     }
 
     @RequestMapping(value = "/log/append")

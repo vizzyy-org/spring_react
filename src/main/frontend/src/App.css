@@ -118,12 +118,15 @@
 
 .logs {
   transform: translateY(2vh);
-  height: 65vh;
+  height: 50vh;
   width: 90vw;
-  /*justify-content: center;*/
-  /*text-align: center;*/
+  justify-content: center;
+  text-align: center;
   margin: auto;
-  /*width: 50%;*/
-  /*border: 3px solid cornflowerblue;*/
+  /*font-size:2vw;*/
+  color: green;
+  font-size: 1.5vmin;
+  border: 3px solid black;
   padding: 10px;
+  overflow: auto;
 }
