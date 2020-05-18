@@ -60,7 +60,6 @@ public class LoggingService {
             File file = new File(logPath);
             int pageStartLine = (page-1)*logPageSize;
             int pageEndLine = page * logPageSize;
-            addEntry(String.format("Calling log pages %d to %d", pageStartLine, pageEndLine));
             ReversedLinesFileReader fileReader = new ReversedLinesFileReader(file);
 
             for(int i=0; i<pageEndLine; i++) {
@@ -69,6 +68,7 @@ public class LoggingService {
                 else
                     lines.add(fileReader.readLine());
             }
+            fileReader.close();
         } catch (Exception e){
             addEntry("Could not return logging page due to: "+e.getLocalizedMessage());
         }
