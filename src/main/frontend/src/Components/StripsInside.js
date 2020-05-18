@@ -15,42 +15,41 @@ class Lights extends React.Component {
     render() {
         return (
             <div className="Content">
-                <br/>
                 <Grid >
                     <Row>
                         <Col xs={4} >
-                            LAMP
+
                         </Col>
                         <Col xs={4} >
-                            XMAS
+                            INSIDE
                         </Col>
                         <Col xs={4} >
-                            STRIPS
+
                         </Col>
                     </Row>
                     <br/>
                     <br/>
                     <Row>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("one", true)}>On</button>
+                            <button className="button1" onClick={() => fetchAPI("inside", "clear")}>Clear</button>
                         </Col>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("two", true)}>On</button>
+                            <button className="button1" onClick={() => fetchAPI("inside", "rainbowCycle")}>Rnbow</button>
                         </Col>
                         <Col xs={4} >
-                            <a href="/lights/strips/inside"><button className="button1">IN</button></a>
+                            <button className="button1" onClick={() => fetchAPI("inside", "green")}>GN</button>
                         </Col>
                     </Row>
                     <br/>
                     <Row>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("one", false)}>Off</button>
+                            <button className="button1" onClick={() => fetchAPI("inside", "blue")}>BL</button>
                         </Col>
                         <Col xs={4} >
-                            <button className="button1" onClick={() => fetchAPI("two", false)}>Off</button>
+                            <button className="button1" onClick={() => fetchAPI("inside", "red")}>RD</button>
                         </Col>
                         <Col xs={4} >
-                            <a href="/lights/strips/outside"><button className="button1">OUT</button></a>
+                            <button className="button1" onClick={() => fetchAPI("inside", "wipeWhite")}>WPWT</button>
                         </Col>
                     </Row>
                 </Grid>

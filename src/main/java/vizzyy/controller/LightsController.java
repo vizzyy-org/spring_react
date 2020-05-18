@@ -25,8 +25,13 @@ public class LightsController {
         return lightsService.toggleLight(2, state);
     }
 
-    @RequestMapping(value = "/three")
-    public String lightThree(@RequestParam Boolean state) {
+    @RequestMapping(value = "/inside")
+    public String lightInside(@RequestParam String state) {
         return lightsService.toggleLight(3, state);
+    }
+
+    @RequestMapping(value = "/outside")
+    public String lightOutside(@RequestParam String state) {
+        return lightsService.toggleLight(4, state);
     }
 }

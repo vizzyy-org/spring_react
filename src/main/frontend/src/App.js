@@ -6,6 +6,8 @@ import {
     Route
 } from "react-router-dom";
 import Lights from "./Components/Lights";
+import StripsInside from "./Components/StripsInside";
+import StripsOutside from "./Components/StripsOutside";
 import Nav from './Components/Nav';
 import Home from './Components/Home';
 import Door from "./Components/Door";
@@ -25,6 +27,12 @@ function App() {
                 <Nav/>
 
                 <Switch>
+                    <Route path="/lights/strips/inside">
+                        <StripsInside/>
+                    </Route>
+                    <Route path="/lights/strips/outside">
+                        <StripsOutside/>
+                    </Route>
                     <Route path="/lights">
                         <Lights/>
                     </Route>
