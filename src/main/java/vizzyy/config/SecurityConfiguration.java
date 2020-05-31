@@ -68,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             List<vizzyy.domain.User> localUser = userRepository.findByCommonName(username);
 
             if(localUser.size() > 0) {
-                boolean revoked = (boolean) keyService.checkRevoked(username);
+                boolean revoked = Boolean.getBoolean(String.valueOf(keyService.checkRevoked(username)));
                 loggingService.addEntry("User details: " + localUser.toString()+ ", revoked: "+revoked);
                 if (revoked)
                     return null;
