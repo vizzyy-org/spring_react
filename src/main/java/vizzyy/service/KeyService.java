@@ -1,76 +1,39 @@
 package vizzyy.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import vizzyy.domain.UserRepository;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 @Service
 public class KeyService {
 
-    private Logger log = LoggerFactory.getLogger(KeyService.class);
-
     @Autowired
     UserRepository userRepository;
 
-    private static String caPass = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ca.password").toArray()[0];
+    @Autowired
+    RestTemplate restTemplate;
 
-    private void execute(String command) throws IOException, InterruptedException {
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("bash", "-c", command);
-        processBuilder.redirectErrorStream(true);
-        Process process = processBuilder.start();
+    @Autowired
+    LoggingService loggingService;
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-        while ((line = in.readLine()) != null) {
-            log.info(line);
-        }
-        process.waitFor();
-        log.info("ok!");
+    @Value("${rest.ca.endpoint}")
+    String caEndpoint;
 
-        in.close();
+    public Object generateUser(String CN, String password){
+        loggingService.addEntry(String.format("generateUser %s, by %s", CN, AuthenticationService.getUserName()));
+        return restTemplate.getForObject(caEndpoint+"/createUser?cn="+CN+"&pw="+password, String.class);
     }
 
-    public void generatePair(String CN) throws IOException, InterruptedException {
-        String command =
-                "openssl req -nodes -new -x509 -days 365 -sha256 " +
-                "-newkey rsa:2048 -keyout " + CN +".key " +
-                "-subj /CN=" + CN + "/OU=" + CN;
-        execute(command);
+    public Object revokeUserCertificate(String CN){
+        loggingService.addEntry(String.format("revokeUserCertificate %s, by %s", CN, AuthenticationService.getUserName()));
+        return restTemplate.getForObject(caEndpoint+"/revokeUser?cn="+CN, String.class);
     }
 
-    public void createSigningRequest(String CN) throws IOException, InterruptedException {
-        String command =
-                "openssl req -new -key "+CN+".key " +
-                "-out "+CN+".csr -sha256 -subj /CN=" + CN + "/OU=" + CN;
-        execute(command);
-    }
-
-    public void signWithCA(String CN) throws IOException, InterruptedException {
-        String command =
-                "openssl ca -config /home/ec2-user/ca/ca.conf -batch " +
-                "-in "+CN+".csr -cert /home/ec2-user/ca/ca.crt -keyfile /home/ec2-user/ca/ca.key " +
-                "-out "+CN+".crt -subj /CN="+CN+"/OU="+CN+" -passin pass:" + caPass;
-        execute(command);
-    }
-
-    public void combine(String CN, String password) throws IOException, InterruptedException {
-        String command =
-                "openssl pkcs12 -export -passout pass:" + password +
-                " -in "+CN+".crt -inkey "+CN+".key -certfile "+CN+".crt " +
-                "-out "+CN+".p12";
-        execute(command);
-    }
-
-    public void export(String CN) throws IOException, InterruptedException {
-        String command = "python scripts/emailCert.py " + CN +".p12";
-        execute(command);
+    public Object checkRevoked(String CN){
+        loggingService.addEntry(String.format("checkRevoked %s, by %s", CN, AuthenticationService.getUserName()));
+        return restTemplate.getForObject(caEndpoint+"/checkRevoked?cn="+CN, String.class);
     }
 
 }

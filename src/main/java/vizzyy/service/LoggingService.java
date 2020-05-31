@@ -28,7 +28,6 @@ public class LoggingService {
     private int logPageSize;
 
     public void addEntry(String entry){
-        String user = " " + AuthenticationService.getUserName();
         log.info(entry);
     }
 

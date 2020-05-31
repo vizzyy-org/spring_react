@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import vizzyy.domain.UserRepository;
+import vizzyy.service.KeyService;
 import vizzyy.service.LoggingService;
 import vizzyy.service.UserService;
 
@@ -46,6 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     UserService userService;
 
     @Autowired
+    KeyService keyService;
+
+    @Autowired
     SessionRegistry sessionRegistry;
 
     @Override
@@ -64,7 +68,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             List<vizzyy.domain.User> localUser = userRepository.findByCommonName(username);
 
             if(localUser.size() > 0) {
-                loggingService.addEntry("User details: " + localUser.toString());
+                boolean revoked = (boolean) keyService.checkRevoked(username);
+                loggingService.addEntry("User details: " + localUser.toString()+ ", revoked: "+revoked);
+                if (revoked)
+                    return null;
                 return new User(username, "", userService.getRole(localUser.get(0).getRole()));
             } else {
                 return null;
