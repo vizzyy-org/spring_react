@@ -10,9 +10,9 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
-    private static String dbUser = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/db.user").toArray()[0];
-    private static String dbPass = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/db.password").toArray()[0];
-    private static String dbURL = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/db.url").toArray()[0];
+    private static String dbUser = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "db.user").toArray()[0];
+    private static String dbPass = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "db.password").toArray()[0];
+    private static String dbURL = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "db.url").toArray()[0];
 
     @Bean
     public DataSource getDataSource() {

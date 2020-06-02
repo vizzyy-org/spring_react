@@ -15,7 +15,7 @@ public class DoorService {
 
     private boolean isDoorOpen = false;
 
-    private static final String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
+    private static final String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "ddns.url").toArray()[0];
 
     public String openDoor(){
         setDoorOpen(true);
