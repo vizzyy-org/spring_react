@@ -1,5 +1,6 @@
 package vizzyy.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +11,12 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
-    private static String dbUser = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/db.user").toArray()[0];
-    private static String dbPass = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/db.password").toArray()[0];
-    private static String dbURL = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/db.url").toArray()[0];
+    @Autowired
+    public S3ResourceService s3ResourceService;
+
+    private final String dbUser = (String) s3ResourceService.loadFileFromS3(s3ResourceService.getCredentialsBucket(), "db.user").toArray()[0];
+    private final String dbPass = (String) s3ResourceService.loadFileFromS3(s3ResourceService.getCredentialsBucket(), "db.password").toArray()[0];
+    private final String dbURL = (String) s3ResourceService.loadFileFromS3(s3ResourceService.getCredentialsBucket(), "db.url").toArray()[0];
 
     @Bean
     public DataSource getDataSource() {

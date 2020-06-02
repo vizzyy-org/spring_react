@@ -27,46 +27,20 @@ import java.time.temporal.ChronoUnit;
 @RequestMapping(value = "/video")
 public class VideoController {
 
-    @Autowired
     LoggingService loggingService;
-
-    @Autowired
     MotionRepository motionRepository;
-
     @Value("${rest.stream.limit}")
     String streamLengthMinutes;
-
-    @Autowired
     RestTemplate sslRestTemplate;
+    S3ResourceService s3ResourceService;
 
-//    private static String voxAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/vox.password").toArray()[0];
-    private static String oculusAuth = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/oculus.password").toArray()[0];
-    private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/cam.url").toArray()[0];
+    private final String cameras = (String) this.s3ResourceService.loadFileFromS3(s3ResourceService.getCredentialsBucket(), "cam.url").toArray()[0];
 
-    @RequestMapping("/oculus")
-    @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
-    public void oculus(HttpServletResponse response) {
-        loggingService.addEntry("Calling /video/oculus...");
-
-//        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-//
-//        RestTemplate restTemplate = restTemplateBuilder
-//                .setConnectTimeout(Duration.ofSeconds(500))
-//                .setReadTimeout(Duration.ofSeconds(500))
-//                .build();
-//
-//        restTemplate.execute(
-//                URI.create(cameras + ":9003"),
-//                HttpMethod.GET,
-//                clientHttpRequest -> {
-//                    clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+oculusAuth);
-//                },
-//                responseExtractor -> {
-//                    response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-//                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
-//                    return null;
-//                }
-//        );
+    public VideoController(LoggingService loggingService, MotionRepository motionRepository, RestTemplate sslRestTemplate, S3ResourceService s3ResourceService) {
+        this.loggingService = loggingService;
+        this.motionRepository = motionRepository;
+        this.sslRestTemplate = sslRestTemplate;
+        this.s3ResourceService = s3ResourceService;
     }
 
     @RequestMapping("/door")
@@ -84,26 +58,6 @@ public class VideoController {
                     return null;
                 }
         );
-
-//        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-//
-//        RestTemplate restTemplate = restTemplateBuilder
-//                .setConnectTimeout(Duration.ofSeconds(60))
-//                .setReadTimeout(Duration.ofSeconds(60))
-//                .build();
-//
-//        restTemplate.execute(
-//                URI.create(cameras + ":9002"),
-//                HttpMethod.GET,
-//                clientHttpRequest -> {
-//                    clientHttpRequest.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic "+voxAuth);
-//                },
-//                responseExtractor -> {
-//                    response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-//                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
-//                    return null;
-//                }
-//        );
 
     }
 
