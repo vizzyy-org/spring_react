@@ -13,12 +13,9 @@ public class DoorService {
     @Autowired
     RestTemplate restTemplate;
 
-    @Autowired
-    S3ResourceService s3ResourceService;
-
     private boolean isDoorOpen = false;
 
-    private final String ddns = (String) s3ResourceService.loadFileFromS3(s3ResourceService.getCredentialsBucket(), "ddns.url").toArray()[0];
+    private static final String ddns = (String) S3ResourceService.loadFileFromS3("vizzyy", "credentials/ddns.url").toArray()[0];
 
     public String openDoor(){
         setDoorOpen(true);
