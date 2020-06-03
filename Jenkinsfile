@@ -136,7 +136,7 @@ pipeline {
                         sh """
                             sed -E s/'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+-SNAPSHOT'/$newVersion/g build.gradle > build.gradle
                             git commit -am "Jenkins incremented build version."
-                            git push origin master
+                            git push origin HEAD:master
                         """
 
                     }
