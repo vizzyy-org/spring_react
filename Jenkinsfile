@@ -11,6 +11,15 @@ try {
     echo "Building from jenkins job..."
 }
 
+String getVersion(){
+    def versionNumber = sh (
+            script: 'cat build.gradle | grep "version = "',
+            returnStdout: true
+    ).trim()
+
+    return versionNumber;
+}
+
 pipeline {
     agent any
     stages {
@@ -43,11 +52,14 @@ pipeline {
                 script {
                     if (env.Deploy == "true") {
 
+                        currentVersion = getVersion()
+
                         //ec2 can only ssh through jumpbox
-                        sh('''
+                        sh("""
                             echo "SCP file to remote server"
                             scp -i ~/ec2pair.pem build/libs/Home*.jar ec2-user@vizzyy.com:~/spring_react
-                        ''')
+                            ssh -i ~/ec2pair.pem ec2-user@vizzyy.com 'ln -sf ~/spring_react/Home-"""+currentVersion+""".jar ~/spring_react/home.jar'
+                        """)
 
                     }
                 }
@@ -108,10 +120,7 @@ pipeline {
                 script {
                     if (env.Build == "true") {
 
-                        def versionNumber = sh (
-                                script: 'cat build.gradle | grep "version = "',
-                                returnStdout: true
-                        ).trim()
+                        versionNumber = getVersion()
                         versions = versionNumber.split(".|-")
                         newMinor = Integer.getInteger(versions[2]) + 1
                         newVersion = "version = '"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
