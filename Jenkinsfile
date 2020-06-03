@@ -1,7 +1,10 @@
 #! groovy
 import java.security.InvalidParameterException
+import java.util.logging.Logger
 
+Logger logger = Logger.getLogger('vizzyy.jenkins.deploy')
 currentBuild.displayName = "Home Pipeline [ " + currentBuild.number + " ]"
+
 
 try {
     if (ISSUE_NUMBER)
@@ -121,7 +124,9 @@ pipeline {
                     if (env.Build == "true") {
 
                         versionNumber = getVersion()
+                        logger.info(versionNumber)
                         versions = versionNumber.split(".|-")
+                        logger.info(versions.toString())
                         newMinor = Integer.getInteger(versions[2]) + 1
                         newVersion = "version = '"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
                         sh """
