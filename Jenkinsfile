@@ -131,7 +131,7 @@ pipeline {
                         echo versions[2]
                         echo versions[3]
                         newMinor = versions[2].toInteger() + 1
-                        newVersion = "'"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
+                        newVersion = "'"+versions[0].substring(1)+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
                         echo newVersion
                         sh """
                             sed -E s/'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+-SNAPSHOT'/$newVersion/g build.gradle > build.gradle
