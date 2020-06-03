@@ -125,7 +125,8 @@ pipeline {
 
                         versionNumber = getVersion()
                         echo versionNumber.toString()
-                        versions = versionNumber.tokenize(".")
+                        versions = versionNumber.split("\\.|-")
+                        System.out.println(versions)
                         newMinor = Integer.getInteger(versions[2]) + 1
                         newVersion = "version = '"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
                         sh """
