@@ -128,6 +128,8 @@ pipeline {
                         versions = versionNumber.split("[.-]")
                         echo versions[0]
                         echo versions[1]
+                        echo versions[2]
+                        echo versions[3]
                         System.out.println(versions)
                         newMinor = Integer.getInteger(versions[2]) + 1
                         newVersion = "version = '"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
