@@ -126,10 +126,6 @@ pipeline {
                         versionNumber = getVersion()
                         echo versionNumber.toString()
                         versions = versionNumber.split("[.-]")
-                        echo versions[0]
-                        echo versions[1]
-                        echo versions[2]
-                        echo versions[3]
                         newMinor = versions[2].toInteger() + 1
                         newVersion = "'"+versions[0].substring(1)+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
                         echo newVersion
