@@ -41,8 +41,8 @@ public class UsersController {
     @PreAuthorize("hasAnyAuthority('ROLE_OWNER')")
     public void generate(@RequestParam String CN, @RequestParam String role, @RequestParam String pw) throws IOException, InterruptedException {
         loggingService.addEntry(String.format("Calling /users/generate?CN=%s&role=%s&pw=%s", CN, role, pw));
-        keyService.generateUser(CN, pw);
-        User newUser = userService.createUser(CN, role);
+        //keyService.generateUser(CN, pw);
+        User newUser = userService.createUser(CN, role, CN, pw);
         loggingService.addEntry(String.format("Successfully created user: %s", newUser.toString()));
     }
 
