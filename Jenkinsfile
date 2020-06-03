@@ -124,9 +124,8 @@ pipeline {
                     if (env.Build == "true") {
 
                         versionNumber = getVersion()
-                        logger.info(versionNumber)
-                        versions = versionNumber.split(".|-")
-                        logger.info(versions.toString())
+                        echo versionNumber.toString()
+                        versions = versionNumber.split("\\.|-")
                         newMinor = Integer.getInteger(versions[2]) + 1
                         newVersion = "version = '"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
                         sh """
