@@ -14,3 +14,4 @@ Jenkins runs remotely and triggers (via githook) a CICD pipeline to deploy to pr
 
 App runs on an EC2 t2-micro instance, with a Route53 domain name. S3 is used to store secrets, and pulled at runtime.
  
+ 
