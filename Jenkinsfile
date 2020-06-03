@@ -89,29 +89,29 @@ pipeline {
                     if (env.Deploy == "true") {
 
                         def deployed = false
-//                        for(int i=0; i<12; i++){
-//
-//                            try {
-//                                def health = sh (
-//                                        script: 'curl --cert-type P12 --cert ~/home-cert.p12:changeit https://www.vizzyy.com/actuator/health',
-//                                        returnStdout: true
-//                                ).trim()
-//                                echo health
-//                                if (health == "{\"status\":\"UP\"}"){
-//                                    deployed = true
-//                                    break
-//                                }
-//                            } catch ( Exception e) {
-//                                echo "could not parse"
-//                                e.printStackTrace()
-//                            }
-//
-//                            sleep time: i, unit: 'SECONDS'
-//
-//                        }
-//
-//                        if(!deployed)
-//                            throw new InvalidParameterException()
+                        for(int i=0; i<12; i++){
+
+                            try {
+                                def health = sh (
+                                        script: 'curl --cert-type P12 --cert ~/home-cert.p12:changeit https://www.vizzyy.com/actuator/health',
+                                        returnStdout: true
+                                ).trim()
+                                echo health
+                                if (health == "{\"status\":\"UP\"}"){
+                                    deployed = true
+                                    break
+                                }
+                            } catch ( Exception e) {
+                                echo "could not parse"
+                                e.printStackTrace()
+                            }
+
+                            sleep time: i, unit: 'SECONDS'
+
+                        }
+
+                        if(!deployed)
+                            throw new InvalidParameterException()
 
                     }
                 }
