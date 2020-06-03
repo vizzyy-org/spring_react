@@ -108,7 +108,18 @@ pipeline {
                 script {
                     if (env.Build == "true") {
 
-                        echo "This is where we'll increment the the version number in the gradle.build file."
+                        def versionNumber = sh (
+                                script: 'cat build.gradle | grep "version = "',
+                                returnStdout: true
+                        ).trim()
+                        versions = versionNumber.split(".|-")
+                        newMinor = Integer.getInteger(versions[2]) + 1
+                        newVersion = "version = '"+versions[0]+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
+                        sh """
+                            sed -E s/[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+-SNAPSHOT/$newVersion/g build.gradle > build.gradle
+                            git commit -am "Jenkins incremented build version."
+                            git push origin master
+                        """
 
                     }
                 }
