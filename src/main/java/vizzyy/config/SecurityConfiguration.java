@@ -1,35 +1,23 @@
 package vizzyy.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import vizzyy.domain.UserRepository;
 import vizzyy.service.KeyService;
 import vizzyy.service.LoggingService;
 import vizzyy.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.security.SecureRandom;
 
 @Configuration
 @EnableWebSecurity
@@ -52,31 +40,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     SessionRegistry sessionRegistry;
 
+    @Value("${password.hashing.salt}")
+    int saltFactor;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
-                .x509().subjectPrincipalRegex("CN=(.*?)(?:,|$)").userDetailsService(userDetailsService())
+                .formLogin()
+                .and()
+                .logout().permitAll().logoutSuccessUrl("/login")
                 .and()
                 .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry);
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            List<vizzyy.domain.User> localUser = userRepository.findByCommonName(username);
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10, new SecureRandom());
+    }
 
-            if(localUser.size() > 0) {
-                boolean revoked = Boolean.getBoolean(String.valueOf(keyService.checkRevoked(username)));
-                loggingService.addEntry("User details: " + localUser.toString()+ ", revoked: "+revoked);
-                if (revoked)
-                    return null;
-                return new User(username, "", userService.getRole(localUser.get(0).getRole()));
-            } else {
-                return null;
-            }
-        };
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImp();
     }
 
 }

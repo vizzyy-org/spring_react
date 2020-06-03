@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import vizzyy.domain.User;
 import vizzyy.domain.UserRepository;
@@ -28,6 +29,9 @@ public class UserService {
 
     @Autowired
     LoggingService loggingService;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<GrantedAuthority> getRole(String role){
         String authority;
@@ -51,9 +55,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(String CN, String role){
+    public User createUser(String CN, String role, String username, String clearTextPassword){
         int size = getUsers().size() + 1;
-        User newUser = new User((long) size, CN, role, true);
+        User newUser = new User((long) size, CN, role, true, username, bCryptPasswordEncoder.encode(clearTextPassword));
         return userRepository.save(newUser);
     }
 
@@ -67,6 +71,11 @@ public class UserService {
 
     public User getUser(String CN){
         List<User> results = userRepository.findByCommonName(CN);
+        return results.size() > 0 ? results.get(0) : null;
+    }
+
+    public User getUserByUsername(String username){
+        List<User> results = userRepository.findByUsername(username);
         return results.size() > 0 ? results.get(0) : null;
     }
 

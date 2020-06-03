@@ -1,5 +1,8 @@
 package vizzyy.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,17 +16,25 @@ public class User {
     @Column(name="common_name")
     private String commonName;
 
+    @Column(name="username")
+    private String username;
+
+    @Column(name="pass")
+    private String password;
+
     private String role;
 
     private boolean enabled;
 
     protected User() {}
 
-    public User(Long user_id, String common_name, String role, Boolean enabled) {
+    public User(Long user_id, String common_name, String role, Boolean enabled, String username, String password) {
         this.id = user_id;
         this.commonName = common_name;
         this.role = role;
         this.enabled = enabled;
+        this.username = username;
+        this.password = password;
     }
 
     @Override
@@ -51,5 +62,21 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
