@@ -130,7 +130,7 @@ pipeline {
                         newVersion = "'"+versions[0].substring(1)+"."+versions[1]+"."+newMinor+"-SNAPSHOT'"
                         echo newVersion
                         sh """
-                            sed -E s/'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+-SNAPSHOT'/$newVersion/g build.gradle > build.gradle
+                            sed -i -E s/'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+-SNAPSHOT'/$newVersion/g build.gradle
                             git commit -am "Jenkins incremented build version."
                             git push origin HEAD:master
                         """
