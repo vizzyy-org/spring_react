@@ -17,7 +17,7 @@ String getVersion(){
             returnStdout: true
     ).trim()
 
-    return versionNumber.subString(9)
+    return versionNumber.substring(9)
 }
 
 pipeline {
