@@ -73,9 +73,9 @@ public class VideoController {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime limit = now.plus(Long.parseLong(streamLengthMinutes), ChronoUnit.MINUTES);
-
+        loggingService.addEntry("now: "+now+", limit: "+limit);
         byte[] buffer = new byte[4096];
-        int n = 0;
+        int n;
         while (-1 != (n = input.read(buffer))) {
             now = LocalDateTime.now();
             if(now.isAfter(limit)) {
