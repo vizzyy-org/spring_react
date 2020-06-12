@@ -51,9 +51,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .and()
-                .logout().permitAll().logoutSuccessUrl("/login")
-                .and()
-                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry);
+                .logout().permitAll().logoutSuccessUrl("/login");
+//                .and()
+//                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry);
     }
 
     @Bean
