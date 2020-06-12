@@ -56,7 +56,7 @@ public class VideoController {
                     return response;
                 }
         );
-
+        loggingService.addEntry("Call to stream /video/door has ended.");
     }
 
     @RequestMapping("/recordings")
@@ -84,6 +84,7 @@ public class VideoController {
             }
             output.write(buffer, 0, n);
         }
+        loggingService.addEntry("Call to copyLarge resolved.");
     }
 
 }
