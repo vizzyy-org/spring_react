@@ -53,7 +53,7 @@ public class VideoController {
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
-                    return null;
+                    return response;
                 }
         );
 
