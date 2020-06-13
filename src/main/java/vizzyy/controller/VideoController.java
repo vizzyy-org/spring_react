@@ -70,7 +70,7 @@ public class VideoController {
 
     // Custom implementation of IOUtils.copy(stream)
     // Allows us to close stream so it is not endlessly copying in>out
-    public void copyLarge(final InputStream input, final OutputStream output)
+    public void copyLarge(InputStream input, OutputStream output)
             throws IOException {
 
         LocalDateTime now = LocalDateTime.now();
@@ -90,7 +90,7 @@ public class VideoController {
             count++;
         }
 //        output.close();
-        input.close();
+//        input.close();
         loggingService.addEntry("Call to copyLarge resolved. Buffer Count: "+ count);
     }
 
