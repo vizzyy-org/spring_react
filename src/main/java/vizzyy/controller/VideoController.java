@@ -53,7 +53,7 @@ public class VideoController {
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
-                    return response;
+                    return null;
                 }
         );
         loggingService.addEntry("Call to stream /video/door has ended.");
@@ -84,8 +84,8 @@ public class VideoController {
             }
             output.write(buffer, 0, n);
         }
-        input.close();
         output.close();
+        input.close();
         loggingService.addEntry("Call to copyLarge resolved.");
     }
 
