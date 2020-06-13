@@ -22,6 +22,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping(value = "/video")
@@ -76,13 +77,16 @@ public class VideoController {
         loggingService.addEntry("now: "+now+", limit: "+limit);
         byte[] buffer = new byte[4096];
         int n;
+        int count = 0;
         while (-1 != (n = input.read(buffer))) {
             now = LocalDateTime.now();
-            if(now.isAfter(limit)) {
+            if(now.isAfter(limit) || count > 1000) {
                 loggingService.addEntry("Stream limit reached.");
                 break;
             }
+            loggingService.addEntry("Buffer: "+ Arrays.toString(buffer));
             output.write(buffer, 0, n);
+            count++;
         }
         output.close();
         input.close();
