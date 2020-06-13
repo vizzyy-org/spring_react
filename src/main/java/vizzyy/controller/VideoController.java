@@ -1,11 +1,13 @@
 package vizzyy.controller;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +55,9 @@ public class VideoController {
                 null,
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+//                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+//                    StreamUtils.copy(responseExtractor.getBody(), response.getOutputStream());
+                    IOUtils.copyLarge(responseExtractor.getBody(), response.getOutputStream());
                     loggingService.addEntry("Call to stream /video/door has ended.");
 //                    responseExtractor.close();
 //                    loggingService.addEntry("responseExtractor stream closed");
