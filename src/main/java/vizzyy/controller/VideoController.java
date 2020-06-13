@@ -84,6 +84,8 @@ public class VideoController {
             }
             output.write(buffer, 0, n);
         }
+        input.close();
+        output.close();
         loggingService.addEntry("Call to copyLarge resolved.");
     }
 
