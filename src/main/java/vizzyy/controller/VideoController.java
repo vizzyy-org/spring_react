@@ -81,16 +81,16 @@ public class VideoController {
         int count = 0;
         while (-1 != (n = input.read(buffer))) {
             now = LocalDateTime.now();
-            if(now.isAfter(limit) || count > 1000) {
+            if(now.isAfter(limit) || count > 10000) {
                 loggingService.addEntry("Stream limit reached.");
                 break;
             }
-            loggingService.addEntry("Buffer: "+ Arrays.toString(buffer).hashCode());
+//            loggingService.addEntry("Buffer: "+ Arrays.toString(buffer).hashCode());
             output.write(buffer, 0, n);
             count++;
         }
 //        output.close();
-//        input.close();
+        input.close();
         loggingService.addEntry("Call to copyLarge resolved. Buffer Count: "+ count);
     }
 
