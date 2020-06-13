@@ -54,10 +54,11 @@ public class VideoController {
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                    loggingService.addEntry("Call to stream /video/door has ended.");
+                    responseExtractor.close();
                     return null;
                 }
         );
-        loggingService.addEntry("Call to stream /video/door has ended.");
     }
 
     @RequestMapping("/recordings")
@@ -84,13 +85,13 @@ public class VideoController {
                 loggingService.addEntry("Stream limit reached.");
                 break;
             }
-            loggingService.addEntry("Buffer: "+ Arrays.toString(buffer));
+            loggingService.addEntry("Buffer: "+ Arrays.toString(buffer).hashCode());
             output.write(buffer, 0, n);
             count++;
         }
-        output.close();
-        input.close();
-        loggingService.addEntry("Call to copyLarge resolved.");
+//        output.close();
+//        input.close();
+        loggingService.addEntry("Call to copyLarge resolved. Buffer Count: "+ count);
     }
 
 }
