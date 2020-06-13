@@ -56,6 +56,7 @@ public class VideoController {
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
                     loggingService.addEntry("Call to stream /video/door has ended.");
                     responseExtractor.close();
+                    loggingService.addEntry("responseExtractor closed");
                     return null;
                 }
         );
@@ -78,20 +79,15 @@ public class VideoController {
         loggingService.addEntry("now: "+now+", limit: "+limit);
         byte[] buffer = new byte[4096];
         int n;
-        int count = 0;
         while (-1 != (n = input.read(buffer))) {
             now = LocalDateTime.now();
-            if(now.isAfter(limit) || count > 10000) {
+            if(now.isAfter(limit)) {
                 loggingService.addEntry("Stream limit reached.");
                 break;
             }
-//            loggingService.addEntry("Buffer: "+ Arrays.toString(buffer).hashCode());
             output.write(buffer, 0, n);
-            count++;
         }
-//        output.close();
-//        input.close();
-        loggingService.addEntry("Call to copyLarge resolved. Buffer Count: "+ count);
+        loggingService.addEntry("Call to copyLarge resolved.");
     }
 
 }
