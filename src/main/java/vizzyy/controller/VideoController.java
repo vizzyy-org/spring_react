@@ -1,19 +1,13 @@
 package vizzyy.controller;
 
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import vizzyy.domain.MotionRepository;
 import vizzyy.service.LoggingService;
 import vizzyy.service.S3ResourceService;
@@ -42,9 +36,6 @@ public class VideoController {
     @Autowired
     RestTemplate sslRestTemplate;
 
-    @Autowired
-    PoolingHttpClientConnectionManager poolingConnectionManager;
-
     private static final String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "cam.url").toArray()[0];
 
     @RequestMapping("/door")
@@ -58,10 +49,13 @@ public class VideoController {
                 null,
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                    try {
+                        copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     loggingService.addEntry("Closing output stream");
-                    poolingConnectionManager.shutdown();
-                    return null;
+                    return response;
                 }
         );
         loggingService.addEntry("Call to stream /video/door has ended.");
@@ -77,7 +71,7 @@ public class VideoController {
     // Custom implementation of IOUtils.copy(stream)
     // Allows us to close stream so it is not endlessly copying in>out
     public void copyLarge(InputStream input, OutputStream output)
-            throws IOException {
+            throws IOException, InterruptedException {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime limit = now.plus(Long.parseLong(streamLengthMinutes), ChronoUnit.MINUTES);
@@ -92,7 +86,9 @@ public class VideoController {
             }
             output.write(buffer, 0, n);
         }
+        output.close();
         loggingService.addEntry("Call to copyLarge resolved.");
+        input.wait();
     }
 
 }
