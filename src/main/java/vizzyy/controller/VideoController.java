@@ -51,7 +51,7 @@ public class VideoController {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
                     loggingService.addEntry("Closing output stream");
-                    responseExtractor.close();
+//                    responseExtractor.close();
                     return null;
                 }
         );
