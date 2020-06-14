@@ -49,9 +49,9 @@ public class VideoController {
                 URI.create(cameras + "/video"),
                 HttpMethod.GET,
                 null,
-                responseExtractor -> {
+                responseEntityExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                    copyLarge(responseEntityExtractor.getBody(), response.getOutputStream());
                     return null;
                 }
         );
