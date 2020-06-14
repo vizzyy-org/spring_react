@@ -1,13 +1,19 @@
 package vizzyy.controller;
 
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import vizzyy.domain.MotionRepository;
 import vizzyy.service.LoggingService;
 import vizzyy.service.S3ResourceService;
@@ -36,7 +42,10 @@ public class VideoController {
     @Autowired
     RestTemplate sslRestTemplate;
 
-    private static String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "cam.url").toArray()[0];
+    @Autowired
+    PoolingHttpClientConnectionManager poolingConnectionManager;
+
+    private static final String cameras = (String) S3ResourceService.loadFileFromS3("vizzyy-credentials", "cam.url").toArray()[0];
 
     @RequestMapping("/door")
     @PreAuthorize("hasAnyAuthority('ROLE_OWNER', 'ROLE_ADMIN')")
@@ -50,11 +59,8 @@ public class VideoController {
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
-                    try {
-                        responseExtractor.close();
-                    } catch( Exception e ){
-                        loggingService.addEntry("Could not close response extractor.");
-                    }
+                    loggingService.addEntry("Closing output stream");
+                    poolingConnectionManager.shutdown();
                     return null;
                 }
         );
@@ -74,7 +80,7 @@ public class VideoController {
             throws IOException {
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime limit = now.plus(1, ChronoUnit.MINUTES);
+        LocalDateTime limit = now.plus(Long.parseLong(streamLengthMinutes), ChronoUnit.MINUTES);
         loggingService.addEntry("now: "+now+", limit: "+limit);
         byte[] buffer = new byte[4096];
         int n;

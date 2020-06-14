@@ -43,4 +43,10 @@
         <appender-ref ref="Console" />
     </logger>
 
+<!--    <logger name="org.apache.http.wire" level="info" additivity="false">-->
+<!--        <appender-ref ref="RollingFile" />-->
+<!--        <appender-ref ref="Console" />-->
+<!--    </logger>-->
+
+
 </configuration>
