@@ -68,6 +68,9 @@ public class RestConfiguration {
         CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).setDefaultRequestConfig(config).setConnectionTimeToLive(1, TimeUnit.MINUTES).build();
         HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setReadTimeout(timeout * 1000);
+        requestFactory.setConnectionRequestTimeout(timeout * 1000);
+        requestFactory.setConnectTimeout(timeout * 1000);
         requestFactory.setHttpClient(httpClient);
 
         return new RestTemplate(requestFactory);
