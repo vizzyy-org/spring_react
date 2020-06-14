@@ -1,5 +1,6 @@
 package vizzyy.config;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -59,7 +60,12 @@ public class RestConfiguration {
         HostnameVerifier hostnameverifier = null;
         SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslcontext,
                 null, null, hostnameverifier);
-        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).setConnectionTimeToLive(1, TimeUnit.MINUTES).build();
+        int timeout = 60; //seconds
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(timeout * 1000)
+                .setConnectionRequestTimeout(timeout * 1000)
+                .setSocketTimeout(timeout * 1000).build();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).setDefaultRequestConfig(config).setConnectionTimeToLive(1, TimeUnit.MINUTES).build();
         HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
