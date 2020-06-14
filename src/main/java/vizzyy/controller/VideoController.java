@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 import vizzyy.domain.MotionRepository;
 import vizzyy.service.LoggingService;
@@ -20,7 +19,6 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/video")
@@ -49,9 +47,14 @@ public class VideoController {
                 URI.create(cameras + "/video"),
                 HttpMethod.GET,
                 null,
-                responseEntityExtractor -> {
+                responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
-                    copyLarge(responseEntityExtractor.getBody(), response.getOutputStream());
+                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                    try {
+                        responseExtractor.close();
+                    } catch( Exception e ){
+                        loggingService.addEntry("Could not close response extractor.");
+                    }
                     return null;
                 }
         );
@@ -71,7 +74,7 @@ public class VideoController {
             throws IOException {
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime limit = now.plus(Long.parseLong(streamLengthMinutes), ChronoUnit.MINUTES);
+        LocalDateTime limit = now.plus(1, ChronoUnit.MINUTES);
         loggingService.addEntry("now: "+now+", limit: "+limit);
         byte[] buffer = new byte[4096];
         int n;
