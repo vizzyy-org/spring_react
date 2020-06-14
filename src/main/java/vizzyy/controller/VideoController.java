@@ -49,12 +49,13 @@ public class VideoController {
                 null,
                 responseExtractor -> {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
+                    copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                    loggingService.addEntry("Closing output stream");
                     try {
-                        copyLarge(responseExtractor.getBody(), response.getOutputStream());
+                        responseExtractor.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    loggingService.addEntry("Closing output stream");
                     return response;
                 }
         );
@@ -71,7 +72,7 @@ public class VideoController {
     // Custom implementation of IOUtils.copy(stream)
     // Allows us to close stream so it is not endlessly copying in>out
     public void copyLarge(InputStream input, OutputStream output)
-            throws IOException, InterruptedException {
+            throws IOException {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime limit = now.plus(Long.parseLong(streamLengthMinutes), ChronoUnit.MINUTES);
@@ -88,7 +89,6 @@ public class VideoController {
         }
         output.close();
         loggingService.addEntry("Call to copyLarge resolved.");
-//        input.wait();
     }
 
 }
