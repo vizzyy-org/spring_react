@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'vizzyy.react'
-version = '0.0.29-SNAPSHOT'
+version = '0.0.30-SNAPSHOT'
 
 configurations {
 	developmentOnly
