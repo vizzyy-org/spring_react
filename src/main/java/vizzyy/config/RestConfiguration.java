@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class RestConfiguration {
@@ -40,30 +41,30 @@ public class RestConfiguration {
     @Bean
     public RestTemplate getRestTemplate() throws IOException, KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyManagementException, CertificateException {
 
-            KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-            keystoreInputStream = new FileInputStream(keystorePath);
-            keystore.load(keystoreInputStream, keystoreSecret.toCharArray());
-            keystoreInputStream.close();
+        KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+        keystoreInputStream = new FileInputStream(keystorePath);
+        keystore.load(keystoreInputStream, keystoreSecret.toCharArray());
+        keystoreInputStream.close();
 
-            KeyStore truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-            truststoreInputStream = new FileInputStream(truststorePath);
-            truststore.load(truststoreInputStream, truststoreSecret.toCharArray());
-            truststoreInputStream.close();
+        KeyStore truststore = KeyStore.getInstance(KeyStore.getDefaultType());
+        truststoreInputStream = new FileInputStream(truststorePath);
+        truststore.load(truststoreInputStream, truststoreSecret.toCharArray());
+        truststoreInputStream.close();
 
-            SSLContext sslcontext = SSLContexts.custom().setProtocol("TLS")
-                    .loadKeyMaterial(keystore, keystoreSecret.toCharArray())
-                    .loadTrustMaterial(truststore, null).build(); //TS secret?
+        SSLContext sslcontext = SSLContexts.custom().setProtocol("TLS")
+                .loadKeyMaterial(keystore, keystoreSecret.toCharArray())
+                .loadTrustMaterial(truststore, null).build(); //TS secret?
 
-            //TODO: Sort out this hostname validation
-            HostnameVerifier hostnameverifier = null;
-            SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslcontext,
-                    null, null, hostnameverifier);
-            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).build();
-            HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
-            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-            requestFactory.setHttpClient(httpClient);
+        //TODO: Sort out this hostname validation
+        HostnameVerifier hostnameverifier = null;
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslcontext,
+                null, null, hostnameverifier);
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).setConnectionTimeToLive(1, TimeUnit.MINUTES).build();
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);
 
-            return new RestTemplate(requestFactory);
+        return new RestTemplate(requestFactory);
     }
 
 }
