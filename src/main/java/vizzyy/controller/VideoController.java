@@ -51,12 +51,8 @@ public class VideoController {
                     response.setContentType("multipart/x-mixed-replace; boundary=BoundaryString");
                     copyLarge(responseExtractor.getBody(), response.getOutputStream());
                     loggingService.addEntry("Closing output stream");
-                    try {
-                        responseExtractor.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return response;
+                    responseExtractor.close();
+                    return null;
                 }
         );
         loggingService.addEntry("Call to stream /video/door has ended.");
