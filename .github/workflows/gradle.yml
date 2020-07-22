@@ -24,7 +24,7 @@ jobs:
         aws-region: us-east-1
     - name: Make directory for secrets
       run: |
-        mkdir -p /etc/pki/vizzyy
+        sudo mkdir -p /etc/pki/vizzyy
     - name: Populate Keystore
       run: |
         echo "${{ secrets.HOME_KEYSTORE_BASE64 }}" | base64 -d > /etc/pki/vizzyy/keystore.jks
