@@ -1,4 +1,5 @@
 # spring_react
+![Java CI with Gradle](https://github.com/vizzyy-org/spring_react/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
 Ongoing redesign of home site.
 
