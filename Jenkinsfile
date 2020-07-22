@@ -131,9 +131,8 @@ pipeline {
                         echo newVersion
                         sh """
                             sed -i -E s/'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+-SNAPSHOT'/$newVersion/g build.gradle
-                            GIT_SSH_COMMAND='ssh -i /var/lib/jenkins/.ssh/id_rsa -o IdentitiesOnly=yes'
-                            git commit -am "Jenkins incremented build version."
-                            git push origin HEAD:master
+                            git -c core.sshCommand="ssh -i /var/lib/jenkins/.ssh/id_rsa" commit -am "Jenkins incremented build version."
+                            git -c core.sshCommand="ssh -i /var/lib/jenkins/.ssh/id_rsa" push origin HEAD:master
                         """
 
                     }
