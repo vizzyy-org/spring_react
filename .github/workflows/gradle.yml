@@ -27,7 +27,7 @@ jobs:
         sudo mkdir -p /etc/pki/vizzyy; sudo chmod -R 777 /etc/pki/vizzyy
     - name: test 
       run: |
-        echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > test.txt; cat text.txt
+        echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > $HOME/test.txt; cat $HOME/text.txt
     - name: Populate Keystore
       run: |
         echo "${{ secrets.HOME_KEYSTORE_BASE64 }}" | base64 -d > /etc/pki/vizzyy/keystore.jks
